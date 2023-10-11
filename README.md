@@ -41,33 +41,40 @@ Aplikasi yang kami ajukan berupa perpustakaan _online_ bernama Bookify. Bookify 
 # Daftar Modul
 Modul website:
 
-1. **HomePage**
+1. **HomePage** (seluruh anggota)
+
 Pada halaman ini pengguna dapat melihat informasi mengenai website. Selain itu, halaman ini juga menampilkan modul yang dapat diakses, Pengguna Guest tidak dapat mengakses modul halaman ulasan buku dan modul halaman request buku.
 	- About website
 
-2. **Profil user**
+2. **Profil user** (Aulia Rizqi)
+
 Pada halaman ini berisi data-data mengenai pengguna dan jenis pengguna(Guest atau Reguler atau Member) serta hal yang dapat dilakukan pengguna.
    	- Ubah Profil 
 
-3. **Halaman pinjam buku**
+3. **Halaman pinjam buku** (Sita Amira)
+
 Halaman ini berisi daftar seluruh buku yang tersedia di perpustakaan dan ulasan buku tersebut serta pengguna terverifikasi(Reguler dan Member) dapat melakukan peminjaman buku.
    	- Filter berdasarkan tahun terbit buku
    	- Filter berdasarkan jenis buku
 
-4. **Halaman baca dan wishlist**
+4. **Halaman baca dan wishlist** (Zaki Baihaqi)
+
  Halaman ini berisi daftar buku yang sedang dipinjam oleh pengguna dan daftar buku yang ingin dipinjam oleh pengguna. Saat pengguna mengklik buku yang ada di halaman ini maka pengguna akan dialihkan ke file ebook. Selain itu, halaman ini juga berisi daftar buku wishlist.
 	- Mengalihkan ke file ebook saat diklik
 
-5. **Halaman request buku**
+5. **Halaman request buku** (Darrel Jeremiah)
+
 Halaman ini membuat pengguna terverifikasi(Reguler dan Member) dapat merequest buku yang belum tersedia di perpustakaan.
    	- Request buku yang belum tersedia di perpustakaan
 
-6. **Halaman ulasan buku**
-Pada halaman ini pengguna terverifikasi(Reguler dan Member) dapat memberikan ulasan buku yang sudah pernah dipinjam.
-   	- list buku yang sudah pernah dipinjam
-   	- ulasan buku
+6. **Halaman ulasan buku** (Eryanda Arian)
 
-7. **Faq**
+Pada halaman ini pengguna terverifikasi(Reguler dan Member) dapat memberikan ulasan buku yang sudah pernah dipinjam.
+   	- List buku yang sudah pernah dipinjam
+   	- Ulasan buku
+
+7. **Faq** (Alif Bintang)
+
 Halaman ini berisi daftar pertanyaan yang sering ditanyakan oleh pengguna beserta jawaban. Selain itu, pengguna dapat mengirimkan pertanyaan melalui form yang tersedia di dalam modul ini.
   	- Kontak
 
