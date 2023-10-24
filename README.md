@@ -59,7 +59,7 @@ Halaman ini berisi daftar seluruh buku yang tersedia di perpustakaan dan ulasan 
 
 4. **Halaman baca dan wishlist** (Zaki Baihaqi)
 
- Halaman ini berisi daftar buku yang sedang dipinjam oleh pengguna dan daftar buku yang ingin dipinjam oleh pengguna. Saat pengguna mengklik buku yang ada di halaman ini maka pengguna akan dialihkan ke file ebook. Selain itu, halaman ini juga berisi daftar buku wishlist.
+Halaman ini berisi daftar buku yang sedang dipinjam oleh pengguna dan daftar buku yang ingin dipinjam oleh pengguna. Saat pengguna mengklik buku yang ada di halaman ini maka pengguna akan dialihkan ke file ebook. Selain itu, halaman ini juga berisi daftar buku wishlist.
 - Mengalihkan ke file ebook saat diklik
 
 5. **Halaman request buku** (Darrel Jeremiah)
