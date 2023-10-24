@@ -37,6 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'BacaDanWishlist',
+    'FAQ',
+    'Homepage',
+    'pinjamBuku',
+    'profilUser',
+    'requestBuku',
+    'ulasanBuku',
 ]
 
 MIDDLEWARE = [
