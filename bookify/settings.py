@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'profilUser',
     'requestBuku',
     'ulasanBuku',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +62,7 @@ ROOT_URLCONF = 'bookify.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
