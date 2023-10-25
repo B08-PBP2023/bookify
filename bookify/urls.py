@@ -22,7 +22,7 @@ urlpatterns = [
     path('',include('Homepage.urls')),
     path('authentication/', include('authentication.urls')),
     path('pinjamBuku/',include('pinjamBuku.urls')),
-    #path('profilUser/', include ('profilUser.urls')),
+    path('profilUser/', include ('profilUser.urls')),
     path('FAQ/',include('FAQ.urls')),
     path('requestBuku/',include('requestBuku.urls')),
     path('ulasanBuku/',include('ulasanBuku.urls')),
