@@ -36,8 +36,6 @@ Aplikasi yang kami ajukan berupa perpustakaan _online_ bernama Bookify. Bookify 
     - Dapat melihat buku yang ada di perpustakaan
     - Dapat melihat ulasan atau quotes dari buku oleh peminjam sebelumnya
 
-
-
 # Daftar Modul
 Modul website:
 
