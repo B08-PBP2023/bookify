@@ -9,7 +9,7 @@ def view_profile(request):
     # Dapatkan profil pengguna yang sesuai dengan pengguna yang saat ini masuk
     user_profile = UserProfile.objects.get(user=request.user)
 
-    return render(request, 'profile.html', {'user_profile': user_profile})
+    return render(request, 'profil.html', {'user_profile': user_profile})
 
 def edit_profile(request):
     # Dapatkan profil pengguna yang sesuai dengan pengguna yang saat ini masuk
