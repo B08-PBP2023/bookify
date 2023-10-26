@@ -34,7 +34,7 @@ def delete_question(request,id):
 
         return HttpResponse(b"DELETE", status=201)
 
-    return HttpResponseNotFound()
+    return HttpResponseNotFound() 
 
 def view_list_questions(request):
 
