@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>FAQ</title>
+    <nav class="navbar navbar-expanded-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white font-monospace" href="#">FAQ</a>    
+        </div>
+    </nav>
+
+    <div id="question_cards"></div>
+
+    <script>
+        async function getQuestions() {
+            return fetch("{% url 'FAQ:get_questions_json' %}").then((res) => res.json())
+        }
+
+        async function refreshQuestions() {
+            document.getElementById('question_cards').innerHTML = ''
+            
+            const questions = await getQuestions();
+
+            let htmlString = ``
+            htmlString += `\n
+            <div class="row m-5">
+            `
+
+
+            questions.forEach((question) => {
+                htmlString += `\n
+                <div class="col mx-5">
+                    <div class="card">
+                        <div class="card-header text-center fw-semibold bg-secondary text-white">
+                            Pertanyaan
+                        </div>
+                        <div class="card-body text-center">
+                            ${question.fields.isi_pertanyaan}
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+
+                            <a>
+                                <button class="form-control btn btn-primary fw-bold" onclick=deleteQuestion(${question.pk})>
+                                    Delete
+                                </button>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+                `
+            })
+            
+            htmlString += `\n
+            </div>
+            `
+
+            document.getElementById('question_cards').innerHTML = htmlString
+        }
+        refreshQuestions()
+
+        function deleteQuestion(id_question) {
+            fetch(`../delete_question/${id_question}/`, {
+                method: "DELETE",
+            }).then(refreshQuestions)
+            return false
+        }
+    </script>
+
+
+{% endblock content %}

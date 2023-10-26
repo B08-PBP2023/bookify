@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <title>FAQ</title>
+    <nav class="navbar navbar-expanded-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white font-monospace" href="#">FAQ</a>    
+            <div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tanya ke Admin</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Pertanyaan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Isi:</label>
+                            <input type="text" class="form-control" id="isi_pertanyaan" name="isi_pertanyaan"></input>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function refreshItems() {
+            
+        }
+
+        function addQuestion() {
+            fetch("{% url 'FAQ:add_question' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshItems)
+
+            document.getElementById("form").reset()
+            return false
+        }
+        document.getElementById("button_add").onclick = addQuestion
+    </script>
+
+
+{% endblock content %}
