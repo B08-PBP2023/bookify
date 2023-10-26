@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
+{% block meta}
+
+{% endblock meta}
 
 {% block content %}
     <title>FAQ</title>
     <nav class="navbar navbar-expanded-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-white font-monospace" href="#">FAQ</a>    
+            <a class="navbar-brand text-white font-monospace" href="#">Frequently Asked Questions</a>    
             <div>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tanya ke Admin</button>
             </div>
         </div>
     </nav>
+
+    <div id="question_answer_cards"></div>
+    <input type="hidden" id="id_for_book" value="{{id_book}}">
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -30,27 +36,64 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal" onclick="addQuestion('{{id_book}}')">Add</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        async function refreshItems() {
-            
+        const id_book = document.getElementById("id_for_book").value
+
+        async function getQuestionsAnswers() {
+            return fetch("{% url 'FAQ:get_questions_answers_json' %}").then((res) => res.json())
         }
 
-        function addQuestion() {
-            fetch("{% url 'FAQ:add_question' %}", {
+        async function getQuestionsAnswersFiltered(id_book) {
+            return fetch("{% url 'FAQ:get_questions_answers_filtered_json' id_book %}").then((res) => res.json())
+        }
+
+        async function refreshQuestions() {
+            document.getElementById('question_answer_cards').innerHTML = ``
+            
+            const questions_answers = await getQuestionsAnswersFiltered();
+
+            let htmlString = ``
+            htmlString += `\n
+            <div class="row m-5">
+            `
+            questions_answers.forEach((question_answer) => {
+                htmlString += `\n
+                <div class="col mx-5">
+                    <div class="card">
+                        <div class="card-header text-center fw-semibold bg-danger text-white">
+                            ${question_answer.fields.isi_pertanyaan}
+                        </div>
+                        <div class="card-body text-center">
+                            ${question_answer.fields.isi_jawaban}
+                        </div>
+                    </div>
+                </div>
+                `
+            })
+            
+            htmlString += `\n
+            </div>
+            `
+            document.getElementById('question_answer_cards').innerHTML = htmlString
+        }
+        refreshQuestions()
+
+        function addQuestion(id_book) {
+            fetch(`../../add_question/${id_book}/`, {
                 method: "POST",
                 body: new FormData(document.querySelector('#form'))
-            }).then(refreshItems)
+            }).then(refreshQuestions)
 
             document.getElementById("form").reset()
             return false
         }
-        document.getElementById("button_add").onclick = addQuestion
+        // document.getElementById("button_add").onclick = addQuestion(id_book)
     </script>
 
 

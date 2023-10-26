@@ -4,19 +4,59 @@
     <title>FAQ</title>
     <nav class="navbar navbar-expanded-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-white font-monospace" href="#">FAQ</a>    
+            <a class="navbar-brand text-white font-monospace" href="#">List Pertanyaan User</a>    
+            <div>
+                {%comment%}
+                <a href="{% url 'FAQ:show_page_admin' %}">
+                    <button type="button" class="btn btn-primary">Back</button>
+                </a>
+                {%endcomment%}
+            </div>
         </div>
     </nav>
 
     <div id="question_cards"></div>
+    <input type="hidden" id="id_for_book" value="{{id_book}}">
+
+    <div class="modal fade" id="jawabanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form Pertanyaan & Jawaban</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Pertanyaan:</label>
+                            <input type="text" class="form-control" id="isi_pertanyaan" name="isi_pertanyaan" ></input>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Jawaban:</label>
+                            <input type="text" class="form-control" id="isi_jawaban" name="isi_jawaban"></input>
+                        </div>
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add_jawaban" data-bs-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        const id_book = document.getElementById("id_for_book").value
+
         async function getQuestions() {
             return fetch("{% url 'FAQ:get_questions_json' %}").then((res) => res.json())
         }
 
         async function refreshQuestions() {
-            document.getElementById('question_cards').innerHTML = ''
+            document.getElementById('question_cards').innerHTML = ``
             
             const questions = await getQuestions();
 
@@ -39,6 +79,13 @@
                         <div class="card-footer d-flex justify-content-between">
 
                             <a>
+                                <button type="button" class="form-control btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#jawabanModal" onclick=setValueQuestion(${question.pk},"${question.fields.isi_pertanyaan}")>
+                                    Jawab
+                                </button>
+                    
+                            </a>
+
+                            <a>
                                 <button class="form-control btn btn-primary fw-bold" onclick=deleteQuestion(${question.pk})>
                                     Delete
                                 </button>
@@ -58,13 +105,38 @@
         }
         refreshQuestions()
 
-        function deleteQuestion(id_question) {
-            fetch(`../delete_question/${id_question}/`, {
+        async function setValueQuestion(id_question, isi_pertanyaan){
+            document.getElementById("isi_pertanyaan").value = isi_pertanyaan
+            document.getElementById("button_add_jawaban").onclick = function() {
+                jawabQuestion(id_question);
+            };
+        }
+
+        async function deleteQuestion(id_question) {
+            fetch(`../../delete_question/${id_question}/`, {    
                 method: "DELETE",
             }).then(refreshQuestions)
             return false
         }
+
+        async function jawabQuestion(id_question) {
+            fetch(`../../jawab_question/${id_book}/`, {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshQuestions)
+
+            // document.getElementById("form").reset()
+
+            fetch(`../../delete_question/${id_question}/`, {
+                method: "DELETE",
+            }).then(refreshQuestions)
+    
+            return false
+        }
+        // document.getElementById("button_add_jawaban").onclick = jawabQuestion
     </script>
+
+
 
 
 {% endblock content %}
