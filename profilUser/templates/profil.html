@@ -67,7 +67,7 @@
         </div>
         
         <p class="edit-link">
-            <a href="{% url 'profilUser:edit_profil' %}">
+            <a href="{% url 'profilUser:edit_profil_ajax' %}">
                 <button class="edit-button">Edit Profil</button>
             </a>
         </p>
@@ -103,6 +103,32 @@
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Profil</button>
         
     </div>
+
+    <script>
+        async function getProfil() {
+            return fetch("{% url 'profilUser:get_profilUser_json' %}").then((res) => res.json())
+        }
+      
+      
+      async function refreshProfil() {
+          
+          
+      }
+      
+      
+      function edit_profil_ajax() {
+        fetch("{% url 'profilUser:edit_profil_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshProducts)
+      
+        document.getElementById("form").reset()
+        return false
+      }
+      document.getElementById("button_add").onclick = edit_profil_ajax
+      </script>
+      
+    
 </body>
 </html>
 
