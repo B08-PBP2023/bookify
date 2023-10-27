@@ -41,11 +41,11 @@ def show_page_admin(request,id_book):
 def add_question(request, id_book):
     if request.method == 'POST':
         buku = Buku.objects.get(pk=id_book)
-        
+
         judul_buku = buku.title
         isi_pertanyaan = request.POST.get("isi_pertanyaan")
 
-        new_item = Question(isi_pertanyaan=isi_pertanyaan, judul_buku=judul_buku)
+        new_item = Question(isi_pertanyaan=isi_pertanyaan, buku=buku)
         new_item.save()
 
         return HttpResponse(b"CREATED", status=201)
@@ -100,20 +100,25 @@ def get_questions_answers_json(request):
     return HttpResponse(serializers.serialize('json', questions_answers))
 
 def get_questions_answers_filtered_json(request, id):
-    judul_buku = Buku.objects.get(pk=id).title
-    print(judul_buku)
-    print(QuestionAnswer.objects.all())
-    questions_answers = QuestionAnswer.objects.filter(judul_buku = judul_buku)
-    print(questions_answers)
+    buku = Buku.objects.get(pk=id)
+    judul_buku = buku.title
+
+    questions_answers = QuestionAnswer.objects.filter(buku = buku)
     
     return HttpResponse(serializers.serialize('json', questions_answers))
 
 def get_questions_filtered_json(request, id):
-    judul_buku = Buku.objects.get(pk=id).title
+    buku = Buku.objects.get(pk=id)
+    judul_buku = buku.title
     
-    questions_answers = Question.objects.filter(judul_buku = judul_buku)
+    questions_answers = Question.objects.filter(buku = buku)
     
     return HttpResponse(serializers.serialize('json', questions_answers))
+
+def get_books(request):
+    books = Buku.objects.all()
+
+    return HttpResponse(serializers.serialize('json', books))
 
 @csrf_exempt
 def jawab_question(request, id_book):
@@ -124,7 +129,7 @@ def jawab_question(request, id_book):
         isi_jawaban = request.POST.get("isi_jawaban")
 
 
-        new_item = QuestionAnswer(isi_pertanyaan=isi_pertanyaan, isi_jawaban=isi_jawaban, judul_buku=judul_buku)
+        new_item = QuestionAnswer(isi_pertanyaan=isi_pertanyaan, isi_jawaban=isi_jawaban, buku = buku)
         new_item.save()
 
         return HttpResponse(b"CREATED", status=201)

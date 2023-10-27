@@ -32,7 +32,7 @@ Aplikasi yang kami ajukan berupa perpustakaan _online_ bernama Bookify. Bookify 
     - Dapat menambah dan mengurangi buku pada perpustakaan
 
 4. Tamu (Guest)
-    - Dapat melihat tampilan perpustakaan secara umum (Kaya liat scele pas belom login)
+    - Dapat melihat tampilan perpustakaan secara umum (seperti scele saat belum login)
     - Dapat melihat buku yang ada di perpustakaan
     - Dapat melihat ulasan atau quotes dari buku oleh peminjam sebelumnya
 
@@ -72,9 +72,11 @@ Pada halaman ini pengguna terverifikasi(Reguler dan Member) dapat memberikan ula
 - Ulasan buku
 
 7. **Faq** (Alif Bintang)
-
-Halaman ini berisi daftar pertanyaan yang sering ditanyakan oleh pengguna beserta jawaban. Selain itu, pengguna dapat mengirimkan pertanyaan melalui form yang tersedia di dalam modul ini.
-- Kontak
+Halaman ini berisi daftar pertanyaan beserta jawaban untuk masing-masing buku. 
+- Sebagai user Non-Admin, user dapat mengirimkan pertanyaan untuk suatu buku melalui form yang tersedia (tetapi belum akan ditampilkan sampai Admin menjawab). 
+- Lalu, Admin dapat melihat kumpulan pertanyaan untuk suatu buku, kemudian dapat memilih pertanyaan mana yang akan dijawab/dihapus. Ketika pertanyaan sudah dijawab, pertanyaan dan jawaban tersebut akan ditampilkan. 
+- Baik Admin dan Non-Admin dapat melihat apa saja pertanyaan dan jawaban untuk setiap buku, tapi jika pertanyaannya belum dijawab, hanya Admin yang dapat melihat kumpulan pertanyaan yang dikirim oleh User Non-Admin tersebut.
+- Tambahan fungsionalitas dan informasi lainnya (seperti Search Bar Buku, Button Back, dan lain-lain)
 
 
 # Sumber Dataset

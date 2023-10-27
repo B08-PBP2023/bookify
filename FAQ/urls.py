@@ -1,7 +1,7 @@
 from django.urls import path
 from FAQ.views import show_page, add_question, view_list_questions, get_questions_json, delete_question, jawab_question, get_questions_answers_json
-from FAQ.views import delete_question_answer, show_page_admin, show_buku, get_questions_answers_filtered_json, get_questions_by_id_json
-from FAQ.views import get_questions_filtered_json
+from FAQ.views import delete_question_answer, show_page_admin, show_buku, get_questions_answers_filtered_json, get_questions_filtered_json, get_questions_by_id_json
+from FAQ.views import get_books
 
 app_name = 'FAQ'
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path('delete_question_answer/<int:id>/', delete_question_answer, name='delete_question'),
     path('jawab_question/<int:id_book>/', jawab_question, name='jawab_question'),
 
-
+    path('get_books/', get_books, name='get_books'),
     path('get_questions_json/', get_questions_json, name='get_questions_json'),
     path('get_questions_filtered_json/<int:id>', get_questions_filtered_json, name='get_questions_filtered_json'),
     path('get_questions_by_id_json/<int:id_question>/', get_questions_by_id_json, name='get_questions_by_id_json'),

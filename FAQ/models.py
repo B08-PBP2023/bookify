@@ -4,11 +4,13 @@ from pinjamBuku.models import Buku
 
 class Question(models.Model):
     isi_pertanyaan = models.TextField()
-    judul_buku = models.TextField()
-    # buku = models.ForeignKey(Buku, on_delete=models.CASCADE)
+    # id_buku = models.IntegerField()
+    # judul_buku = models.TextField()
+    buku = models.ForeignKey(Buku, on_delete=models.CASCADE)
 
 class QuestionAnswer(models.Model):
     isi_pertanyaan = models.TextField()
     isi_jawaban = models.TextField()
-    judul_buku = models.TextField()
-    # buku = models.ForeignKey(Buku, on_delete=models.CASCADE)
+    # id_buku = models.IntegerField()
+    # judul_buku = models.TextField()
+    buku = models.ForeignKey(Buku, on_delete=models.CASCADE)
