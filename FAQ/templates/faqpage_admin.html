@@ -4,10 +4,13 @@
     <title>FAQ</title>
     <nav class="navbar navbar-expanded-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-white font-monospace" href="#">Frequently Asked Questions (Admin)</a>    
+            <a class="navbar-brand text-white font-monospace" href="#">Frequently Asked Questions Buku {{id_book}} (Admin)</a>    
             <div>
-                <a href="{% url 'FAQ:view_list_questions' id_book%}">
+                <a href="{% url 'FAQ:view_list_questions' id_book %}" style="text-decoration: none;">
                     <button type="button" class="btn btn-primary">Lihat List Pertanyaan User</button>
+                </a>
+                <a href="{% url 'FAQ:show_buku'%}" style="text-decoration: none;" class="mx-2">
+                    <button type="button" class="btn btn-primary">Back</button>
                 </a>
                 
             </div>
@@ -18,6 +21,8 @@
     <input type="hidden" id="id_for_book" value="{{id_book}}">
 
     <script>
+        const id_book = document.getElementById("id_for_book").value
+
         async function getQuestionsAnswers() {
             return fetch("{% url 'FAQ:get_questions_answers_json' %}").then((res) => res.json())
         }
@@ -29,7 +34,7 @@
         async function refreshQuestions() {
             document.getElementById('question_answer_cards').innerHTML = ``
             
-            const questions_answers = await getQuestionsAnswersFiltered();
+            const questions_answers = await getQuestionsAnswersFiltered(id_book);
 
             let htmlString = ``
             htmlString += `\n

@@ -4,19 +4,20 @@
     <title>FAQ</title>
     <nav class="navbar navbar-expanded-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-white font-monospace" href="#">List Pertanyaan User</a>    
+            <a class="navbar-brand text-white font-monospace" href="#">List Pertanyaan User Buku {{id_book}}</a>    
             <div>
-                {%comment%}
-                <a href="{% url 'FAQ:show_page_admin' %}">
+            
+                <a href="{% url 'FAQ:show_page' id_book %}">
                     <button type="button" class="btn btn-primary">Back</button>
                 </a>
-                {%endcomment%}
+                
             </div>
         </div>
     </nav>
 
     <div id="question_cards"></div>
     <input type="hidden" id="id_for_book" value="{{id_book}}">
+
 
     <div class="modal fade" id="jawabanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -55,10 +56,18 @@
             return fetch("{% url 'FAQ:get_questions_json' %}").then((res) => res.json())
         }
 
+        async function getQuestionsFiltered(id_book) {
+            return fetch("{% url 'FAQ:get_questions_filtered_json' id_book %}").then((res) => res.json())
+        }
+
+        async function getQuestionsById(id_question) {
+            return fetch(`/FAQ/get_questions_by_id_json/${id_question}/`).then((res) => res.json())
+        }
+
         async function refreshQuestions() {
             document.getElementById('question_cards').innerHTML = ``
             
-            const questions = await getQuestions();
+            const questions = await getQuestionsFiltered(id_book);
 
             let htmlString = ``
             htmlString += `\n
@@ -79,7 +88,7 @@
                         <div class="card-footer d-flex justify-content-between">
 
                             <a>
-                                <button type="button" class="form-control btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#jawabanModal" onclick=setValueQuestion(${question.pk},"${question.fields.isi_pertanyaan}")>
+                                <button type="button" class="form-control btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#jawabanModal" onclick=setValueQuestion(${question.pk})>
                                     Jawab
                                 </button>
                     
@@ -105,8 +114,11 @@
         }
         refreshQuestions()
 
-        async function setValueQuestion(id_question, isi_pertanyaan){
-            document.getElementById("isi_pertanyaan").value = isi_pertanyaan
+        async function setValueQuestion(id_question){
+            let isi_pertanyaan_temp = await getQuestionsById(id_question)
+            isi_pertanyaan_temp = isi_pertanyaan_temp[0].fields.isi_pertanyaan
+
+            document.getElementById("isi_pertanyaan").value = isi_pertanyaan_temp
             document.getElementById("button_add_jawaban").onclick = function() {
                 jawabQuestion(id_question);
             };
@@ -125,7 +137,7 @@
                 body: new FormData(document.querySelector('#form'))
             }).then(refreshQuestions)
 
-            // document.getElementById("form").reset()
+            document.getElementById("form").reset()
 
             fetch(`../../delete_question/${id_question}/`, {
                 method: "DELETE",

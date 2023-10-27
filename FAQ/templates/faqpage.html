@@ -10,6 +10,9 @@
             <a class="navbar-brand text-white font-monospace" href="#">Frequently Asked Questions</a>    
             <div>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Tanya ke Admin</button>
+                <a href="{% url 'FAQ:show_buku'%}" style="text-decoration: none;" class="mx-2">
+                    <button type="button" class="btn btn-primary">Back</button>
+                </a>
             </div>
         </div>
     </nav>
@@ -56,7 +59,7 @@
         async function refreshQuestions() {
             document.getElementById('question_answer_cards').innerHTML = ``
             
-            const questions_answers = await getQuestionsAnswersFiltered();
+            const questions_answers = await getQuestionsAnswersFiltered(id_book);
 
             let htmlString = ``
             htmlString += `\n

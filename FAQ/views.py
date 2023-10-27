@@ -8,18 +8,27 @@ from pinjamBuku.models import Buku
 # Create your views here.
 
 def show_buku(request):
+
     books = Buku.objects.all()
 
     context = {
         'books':books,
     }
 
+    if(request.user.username == 'adminbookify'):
+        print('Success')
+        return render(request, 'show_buku_admin.html', context)
+
     return render(request, 'show_buku.html', context)
 
 def show_page(request, id_book):
+        
     context = {
         'id_book' : id_book,
     }
+    if(request.user.username == 'adminbookify'):
+        return render(request, 'faqpage_admin.html', context)
+
     return render(request, 'faqpage.html', context)
 
 def show_page_admin(request,id_book):
@@ -79,6 +88,11 @@ def get_questions_json(request):
     
     return HttpResponse(serializers.serialize('json', questions))
 
+def get_questions_by_id_json(request, id_question):
+    questions = Question.objects.filter(pk=id_question)
+    
+    return HttpResponse(serializers.serialize('json', questions))
+
 def get_questions_answers_json(request):
     questions_answers = QuestionAnswer.objects.all()
     print(questions_answers)
@@ -86,11 +100,18 @@ def get_questions_answers_json(request):
     return HttpResponse(serializers.serialize('json', questions_answers))
 
 def get_questions_answers_filtered_json(request, id):
-    buku = Buku.objects.get(pk=id)
-    print(buku.title)
+    judul_buku = Buku.objects.get(pk=id).title
+    print(judul_buku)
     print(QuestionAnswer.objects.all())
-    questions_answers = QuestionAnswer.objects.filter(judul_buku = buku.title)
+    questions_answers = QuestionAnswer.objects.filter(judul_buku = judul_buku)
     print(questions_answers)
+    
+    return HttpResponse(serializers.serialize('json', questions_answers))
+
+def get_questions_filtered_json(request, id):
+    judul_buku = Buku.objects.get(pk=id).title
+    
+    questions_answers = Question.objects.filter(judul_buku = judul_buku)
     
     return HttpResponse(serializers.serialize('json', questions_answers))
 
