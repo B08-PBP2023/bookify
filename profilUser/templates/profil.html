@@ -43,6 +43,7 @@
     <div class="profile-container">
         <div class="profile-header">
             <h1>Profil</h1>
+
             <img class="profile-image" src="{{ profilUser.foto_profil.url }}" alt="Profil Picture">
         </div>
         
@@ -103,6 +104,35 @@
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit Profil</button>
         
     </div>
+
+ <!-- Your existing code for the profile information -->
+
+<h1>Pilih Buku Favorit Saya</h1>
+<div class="row row-cols-1 row-cols-md-3 g-4 py-3 justify-content-center">
+    {% for book in books %}
+    <div class="col mx-5">
+        <div class="card">
+            <div class="card-header text-center fw-semibold bg-success text-white">
+                Buku {{ book.pk }}
+            </div>
+            <div class="card-body text-center">
+                <strong>Judul</strong>: {{ book.title }} <br>
+                <strong>Penulis</strong>: {{ book.authors }} <br>
+                <strong>Bahasa</strong>: {{ book.language_code }} <br>
+                <strong>Jumlah Halaman</strong>: {{ book.num_pages }} <br>
+                <strong>Tanggal Publikasi</strong>: {{ book.publication_date }} <br>
+                <strong>Penerbit</strong>: {{ book.publisher }} <br>
+            </div>
+            <a href="{% url 'profilUser:show_page' book.pk %}">
+                <button class="form-control btn btn-primary fw-bold">
+                    Tambahkan ke Favorit
+                </button>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
 
     <script>
         async function getProfil() {
