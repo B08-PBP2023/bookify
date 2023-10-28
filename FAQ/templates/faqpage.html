@@ -30,13 +30,11 @@
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Form Pertanyaan</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                
                 <div class="modal-body">
                     <form id="form" onsubmit="return false;">
                         {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="name" class="col-form-label">Isi:</label>
-                            <input type="text" class="form-control" id="isi_pertanyaan" name="isi_pertanyaan"></input>
-                        </div>
+                        {{ form.isi_pertanyaan.label_tag }} {{ form.isi_pertanyaan }}<br>
                         
                     </form>
                 </div>
@@ -48,6 +46,7 @@
         </div>
     </div>
 
-    <script src="{% static 'js/faqpage.js' %}"></script>
+    <script src="{% static 'js/faq_page.js' %}"></script>
+    
 
 {% endblock content %}

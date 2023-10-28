@@ -29,15 +29,16 @@
                 <div class="modal-body">
                     <form id="form" onsubmit="return false;">
                         {% csrf_token %}
+                        
+                        
                         <div class="mb-3">
-                            <label for="name" class="col-form-label">Pertanyaan:</label>
-                            <input type="text" class="form-control" id="isi_pertanyaan" name="isi_pertanyaan" ></input>
+                            {{ form.isi_pertanyaan.label_tag }} {{ form.isi_pertanyaan }}
                         </div>
 
                         <div class="mb-3">
-                            <label for="name" class="col-form-label">Jawaban:</label>
-                            <input type="text" class="form-control" id="isi_jawaban" name="isi_jawaban"></input>
+                            {{ form.isi_jawaban.label_tag }} {{ form.isi_jawaban }}
                         </div>
+                        
                         
                     </form>
                 </div>

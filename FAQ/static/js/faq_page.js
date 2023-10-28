@@ -1,9 +1,6 @@
 const id_book = document.getElementById("id_for_book").value
 const filteredUrl = document.getElementById("filtered_url").dataset.url;
 
-// async function getQuestionsAnswers() {
-//     return fetch("{% url 'FAQ:get_questions_answers_json' %}").then((res) => res.json())
-// }
 
 async function getQuestionsAnswersFiltered(id_book) {
     return fetch(filteredUrl).then((res) => res.json())
@@ -18,18 +15,23 @@ async function refreshQuestions() {
     htmlString += `\n
     <div class="row m-5">
     `
+    
     questions_answers.forEach((question_answer) => {
         htmlString += `\n
-        <div class="col mx-5">
-            <div class="card">
-                <div class="card-header text-center fw-semibold bg-danger text-white">
-                    ${question_answer.fields.isi_pertanyaan}
-                </div>
-                <div class="card-body text-center">
-                    ${question_answer.fields.isi_jawaban}
+        
+            <div class="col mx-5">
+                <div class="card">
+                    <div class="card-header text-center fw-semibold bg-danger text-white">
+                        ${question_answer.fields.isi_pertanyaan}
+                    </div>
+                    <div class="card-body text-center">
+                        ${question_answer.fields.isi_jawaban}
+                    </div>
                 </div>
             </div>
-        </div>
+            
+        
+        
         `
     })
     

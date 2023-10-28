@@ -16,6 +16,7 @@ Aplikasi yang kami ajukan berupa perpustakaan _online_ bernama Bookify. Bookify 
     - Dapat request buku, jika buku yang ingin dibaca tidak ada di perpustakaan
     - Dapat mengulas buku yang telah dibaca
     - Dapat melihat ulasan atau quotes dari buku oleh peminjam sebelumnya
+    - Dapat menanyakan pertanyaan untuk suatu buku
     - Dapat meminjam buku dengan jangka waktu lebih singkat dibanding member
 
 2. Spesial (Member)
@@ -24,6 +25,7 @@ Aplikasi yang kami ajukan berupa perpustakaan _online_ bernama Bookify. Bookify 
     - Dapat request buku, jika buku yang ingin dibaca tidak ada di perpustakaan
     - Dapat mengulas buku yang telah dibaca
     - Dapat melihat ulasan atau quotes dari buku oleh peminjam sebelumnya
+    - Dapat menanyakan pertanyaan untuk suatu buku
     - Dapat meminjam buku dengan waktu peminjaman yang lebih lama dibanding reguler 
 
 3. Admin
@@ -35,7 +37,6 @@ Aplikasi yang kami ajukan berupa perpustakaan _online_ bernama Bookify. Bookify 
 4. Tamu (Guest)
     - Dapat melihat tampilan perpustakaan secara umum (seperti scele saat belum login)
     - Dapat melihat buku yang ada di perpustakaan
-    - Dapat melihat ulasan atau quotes dari buku oleh peminjam sebelumnya
 
 # Daftar Modul
 Modul website:

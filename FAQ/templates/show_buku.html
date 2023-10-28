@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block meta}
-    
+    <!-- <link rel="stylesheet" href="{% static 'css/faq_style.css' %}" > -->
 {% endblock meta}
 
 {% block content %}
@@ -16,7 +16,13 @@
         
     </nav>
 
-    <div class="container my-5">
+    <div class="container my-3">
+        <div class="alert alert-info py-3 text-center">
+                Welcome, <strong>{{name}}</strong>! Because you have a role <strong>{{role}}</strong>, you can ask questions about a specific book.
+        </div>
+    </div>
+
+    <div class="container mt-3">
         
         <div class="input-group">
             <input id="filter_judul" class="form-control" type="search" placeholder="Masukkan judul buku..." aria-label="Search">

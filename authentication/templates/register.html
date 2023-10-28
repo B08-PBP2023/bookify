@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block meta %}
     <title>Register</title>
 {% endblock meta %}
@@ -55,6 +55,21 @@
 
     .btn:hover {
         background: #555;
+    }
+
+    .login_guest_btn {
+        background: #555;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .login_guest_btn:hover {
+        background: #777;
     }
 
     ul {

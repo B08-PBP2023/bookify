@@ -36,14 +36,9 @@ async function refreshQuestions() {
                 </div>
                 <div class="card-footer d-flex justify-content-between">
 
-                    // <a href="{% url 'main:create_item' %}" style="text-decoration: none;">
-                    //     <button class="form-control btn btn-primary fw-bold">
-                    //         Jawab forms.py
-                    //     </button>
-                    // </a>
-
                     <a>
-                        <button type="button" class="form-control btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#jawabanModal" onclick=setValueQuestion(${question.pk})>
+                        <button type="button" class="form-control btn btn-primary fw-bold" data-bs-toggle="modal" 
+                        data-bs-target="#jawabanModal" onclick=setValueQuestion(${question.pk})>
                             Jawab
                         </button>
             
