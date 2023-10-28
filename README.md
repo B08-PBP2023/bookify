@@ -30,6 +30,7 @@ Aplikasi yang kami ajukan berupa perpustakaan _online_ bernama Bookify. Bookify 
     - Dapat mengakses data peminjam buku
     - Dapat mengakses masa membership anggota
     - Dapat menambah dan mengurangi buku pada perpustakaan
+    - Dapat menambahkan Q&A (menjawab pertanyaan) untuk setiap buku
 
 4. Tamu (Guest)
     - Dapat melihat tampilan perpustakaan secara umum (seperti scele saat belum login)

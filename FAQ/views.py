@@ -4,6 +4,8 @@ from FAQ.models import Question, QuestionAnswer
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.core import serializers
 from pinjamBuku.models import Buku
+from FAQ.forms import QuestionForm, QuestionAnswerForm
+from django.urls import reverse
 
 # Create your views here.
 
@@ -36,6 +38,45 @@ def show_page_admin(request,id_book):
         'id_book' : id_book,
     }
     return render(request, 'faqpage_admin.html', context)
+
+def view_list_questions(request, id_book):
+
+    # questions = Question.objects.all()
+
+    context = {
+        # 'questions' : questions, 
+        'id_book' : id_book,
+    }
+
+    return render(request, 'listquestions.html', context)
+
+def add_question_formspy(request):
+    form = QuestionForm(request.POST or None)
+
+    if form.is_valid() and request.method == "POST":
+        item = form.save(commit=False)
+        # item.user = request.user
+        item.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {'form': form}
+    return render(request, "create_item.html", context)
+
+@csrf_exempt
+def jawab_question(request, id_book):
+    if request.method == 'POST':
+        buku = Buku.objects.get(pk=id_book)
+        judul_buku = buku.title
+        isi_pertanyaan = request.POST.get("isi_pertanyaan")
+        isi_jawaban = request.POST.get("isi_jawaban")
+
+
+        new_item = QuestionAnswer(isi_pertanyaan=isi_pertanyaan, isi_jawaban=isi_jawaban, buku = buku)
+        new_item.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
 
 @csrf_exempt
 def add_question(request, id_book):
@@ -72,16 +113,6 @@ def delete_question_answer(request,id):
 
     return HttpResponseNotFound() 
 
-def view_list_questions(request, id_book):
-
-    # questions = Question.objects.all()
-
-    context = {
-        # 'questions' : questions, 
-        'id_book' : id_book,
-    }
-
-    return render(request, 'listquestions.html', context)
 
 def get_questions_json(request):
     questions = Question.objects.all()
@@ -120,21 +151,6 @@ def get_books(request):
 
     return HttpResponse(serializers.serialize('json', books))
 
-@csrf_exempt
-def jawab_question(request, id_book):
-    if request.method == 'POST':
-        buku = Buku.objects.get(pk=id_book)
-        judul_buku = buku.title
-        isi_pertanyaan = request.POST.get("isi_pertanyaan")
-        isi_jawaban = request.POST.get("isi_jawaban")
-
-
-        new_item = QuestionAnswer(isi_pertanyaan=isi_pertanyaan, isi_jawaban=isi_jawaban, buku = buku)
-        new_item.save()
-
-        return HttpResponse(b"CREATED", status=201)
-
-    return HttpResponseNotFound()
 
 
 
