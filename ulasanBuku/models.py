@@ -1,18 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import User
+from pinjamBuku.models import Buku
 
 class Review(models.Model):
-    prof_pict = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField(default=0)  # Ganti dengan field yang sesuai dengan penilaian Anda
+    book = models.ForeignKey(Buku, on_delete=models.CASCADE)  # Menambahkan foreign key ke model Buku
+    rating = models.PositiveIntegerField(default=0)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f'Review by {self.user.username}'
+    
+# from django.db import models
+# from django.contrib.auth.models import User
 
-    class Meta:
-        ordering = ['-created_at']
+# class Review(models.Model):
+#     prof_pict = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     rating = models.PositiveIntegerField(default=0)  # Ganti dengan field yang sesuai dengan penilaian Anda
+#     content = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f'Review by {self.user.username}'
+
+#     class Meta:
+#         ordering = ['-created_at']
+
 
 
 # from django.db import models
