@@ -1,5 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, redirect
+
+from pinjamBuku.models import Buku
 from .models import UserProfile
 from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
@@ -7,8 +9,21 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
 def show_page(request):
-    context = {}
+    books = Buku.objects.all()
+    context = {
+        'books':books,
+    }
     return render(request, 'profil.html', context)
+
+def show_buku(request):
+
+    books = Buku.objects.all()
+
+    context = {
+        'books':books,
+    }
+
+    return render(request, 'show_buku.html', context)
 
 @login_required
 def profile(request):
