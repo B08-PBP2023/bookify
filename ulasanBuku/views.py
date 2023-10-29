@@ -3,13 +3,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
 # Create your views here.
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from .models import Review
 from .forms import ReviewForm  # Anda perlu membuat form terlebih dahulu
 from pinjamBuku.models import Buku
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseNotFound, HttpResponse
 
 @login_required
 
@@ -19,26 +18,6 @@ def show_page(request):
         'books':books,
     }
     return render(request, 'show_buku_ulasan.html', context)
-
-# def create_review(request, book_id):
-#     book = get_object_or_404(Buku, pk=book_id)
-#     if request.method == 'POST':
-#         form = ReviewForm(request.POST)
-#         if form.is_valid():
-#             review = form.save(commit=False)
-#             review.user = request.user
-#             review.book = book  # Menyimpan buku yang diulas
-#             review.save()
-#             return redirect('review_list')
-#     else:
-#         form = ReviewForm()
-
-#     context = {
-#         'form': form,
-#         'book': book,
-#     }
-
-#     return render(request, 'create_review.html', context)
 
 def review_list(request, id):
     books = Buku.objects.all()

@@ -2,6 +2,7 @@
 
 {% block meta %}
     <title>Ulasan</title>
+    
 {% endblock meta %}
 
 {% block content %}
@@ -9,10 +10,11 @@
         <div class="container-fluid">
             <a class="navbar-brand text-white font-monospace" href="#"></a>
             <a href="{% url 'ulasanBuku:show_buku_ulasan' %}" style="text-decoration: none;" class="mx-2">
-                <button type="button" class="btn btn-primary">Back</button>
+                <button type="button" class="btn btn-primary">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
             </a>
         </div>
-        
     </nav>
 
     <div class="container mt-5">
@@ -20,7 +22,7 @@
             <div class="col-md-6 offset-md-3">
                 <div class="card bg-light">
                     <div class="card-header bg-primary">
-                        <h2 class="text-center text-white">Ulasan</h2>
+                        <h2 class="page-title">Kotak ulasan</h2>
                     </div>
                     <div class="card-body">
                         <form method="post">
@@ -60,7 +62,7 @@
                         <p>{{ review.content }}</p>
                     </div>
                     <div class="card-footer bg-light">
-                        Ditulis oleh: {{ review.user.username }}
+                        Ditulis oleh: {{ review.user.username }} pada tanggal {{review.created_at}}
                     </div>
                 </div>
             </div>
