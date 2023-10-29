@@ -1,17 +1,17 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Buku
+from .models import BukuReq
 from .forms import BookRequestForm
 from django.views.decorators.csrf import csrf_exempt
 from FAQ.models import Question, QuestionAnswer
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.core import serializers
-# from pinjamBuku.models import Buku
+# from pinjamBukuReq.models import BukuReq
 
 
 
 def show_home(request):
-    books = Buku.objects.all()
+    books = BukuReq.objects.all()
     print(books)
     context = {
         'books' : books,
@@ -22,10 +22,12 @@ def show_home(request):
 def book_request(request):
     if request.method == 'POST':
         form = BookRequestForm(request.POST)
+        
         if form.is_valid():
+            print("VALIDD")
             form.instance.user = request.user  # Mengisi user dengan objek User saat menyimpan form.
             form.save()
-            return redirect('requestBuku:book_request')
+            return redirect('requestBuku:show_home')
     else:
         form = BookRequestForm()
     return render(request, 'book_request.html', {'form': form})
@@ -43,7 +45,7 @@ def book_request(request):
 #     return render(request, 'book_request.html', {'form': form})
 
 def get_books(request):
-    books = Buku.objects.all()
+    books = BukuReq.objects.all()
     return HttpResponse(serializers.serialize('json',books))
 
 # def view_request(request):
