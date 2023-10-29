@@ -35,10 +35,6 @@
  </div>
 
   <script>
-    async function getProfil() {
-        return fetch ("{% url 'BacaDanWishlist:get_profilUser_json'}").then((res) => res.json())
-    }
-
     async function getwishlist() {
       return fetch(`get_wishlist/`).then((res) => res.json())
     }
@@ -94,10 +90,8 @@
 
         fetch(`add_wishlist/${id_book}/`, {
             method: "POST",
-            body: new FormData(document.querySelector('#form'))
         }).then(refreshProfil)
       
-        document.getElementById("form").reset()
         return false
     }
 
