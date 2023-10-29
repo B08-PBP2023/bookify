@@ -35,12 +35,17 @@ async function refreshBooks() {
                     <strong>Tanggal Publikasi</strong>: ${book.fields.publication_date} <br>
                     <strong>Penerbit</strong>: ${book.fields.publisher} <br>
                 </div>
+                <a href="delete/${book.pk}">
+                    <button class="form-control btn btn-danger fw-bold">
+                        - Delete
+                    </button>
+                </a>
             </div>
         </div>
         `
     })
     
-    htmlString += `\n
+    htmlString += `\n   
     </div>
     `
     document.getElementById('book_cards').innerHTML = htmlString
