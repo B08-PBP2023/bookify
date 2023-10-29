@@ -26,5 +26,5 @@ urlpatterns = [
     path('FAQ/',include('FAQ.urls')),
     path('requestBuku/',include('requestBuku.urls')),
     path('ulasanBuku/',include('ulasanBuku.urls')),
-
+    path('BacaDanWishlist/', include('BacaDanWishlist.urls')),
 ]
