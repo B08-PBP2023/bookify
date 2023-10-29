@@ -82,5 +82,5 @@ https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks/
 
 ## Bonus
 <label> Pipeline status </label>
- ![Pipeline Status](https://github.com/B08-PBP2023/actions/workflows/pbp-deploy.yml/badge.svg)
+ ![Pipeline Status](https://github.com/B08-PBP2023/bookify/actions/workflows/pbp-deploy.yml/badge.svg)
 
