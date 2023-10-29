@@ -39,18 +39,6 @@ def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     return render(request, 'userprofile/profil.html', {'user_profile': user_profile})
 
-@login_required
-def create_profil(request):
-    if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            
-            return redirect('profile')
-    else:
-        form = UserProfileForm()
-    return render(request, 'userprofile/create_profil.html', {'form': form})
 
 @csrf_exempt
 def edit_profil_ajax(request):
@@ -105,7 +93,6 @@ def get_user_profile_by_name(request):
 
 
 def get_favorites(request):
-    # book = Buku.objects.get(pk=id)
     
     favorite_books = Favorit.objects.filter(user=request.user)
     
@@ -124,7 +111,7 @@ def delete_favorit(request,id):
 
 @csrf_exempt
 def add_favorit(request, id_book):
-    print("TESTTTTTTTTTTTTTTTTTTT")
+
     if request.method == 'POST':
         buku = Buku.objects.get(pk=id_book)
         
@@ -137,13 +124,6 @@ def add_favorit(request, id_book):
         
         print(buku.title)
         print(type(id_book))
-        
-        # title = models.TextField(null=True, blank=True)
-        # authors = models.TextField(null=True, blank=True)
-        # language_code = models.TextField(null=True, blank=True)
-        # num_pages = models.IntegerField(null=True, blank=True)
-        # publication_date = models.TextField(null=True, blank=True)
-        # publisher = models.TextField(null=True, blank=True)
     
         new_item = Favorit(user=request.user, id_book=id_book, title=buku.title, authors=buku.authors, language_code=buku.language_code, num_pages=buku.num_pages, publication_date=buku.publication_date, publisher=buku.publisher)
         new_item.save()
