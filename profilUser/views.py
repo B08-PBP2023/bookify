@@ -1,6 +1,9 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect
-
+from datetime import datetime
+from django.contrib.auth.models import User
+from django.urls import reverse
+from authentication.models import UserWithRole
 from pinjamBuku.models import Buku
 from .models import Favorit, UserProfile
 from .forms import UserProfileForm
@@ -11,9 +14,12 @@ from django.core import serializers
 @login_required(login_url='/login')
 def show_page(request):
     books = Buku.objects.all()
+    user_with_role = UserWithRole.objects.get(user=request.user)
+    role = user_with_role.role
+
     context = {
         'name': request.user.username,
-      
+        'role': role,
         'books':books,
     }
     return render(request, 'profil.html', context)
@@ -49,21 +55,29 @@ def create_profil(request):
 @csrf_exempt
 def edit_profil_ajax(request):
     if request.method == 'POST':
-        name = request.POST.get("name")
-        status = request.POST.get("status")
-        tanggal_lahir = request.POST.get("tanggal_lahir")
-        description = request.POST.get("description")
-        foto_profil = request.POST.get("foto_profil")
+        tl = request.POST.get('tanggal_lahir')
 
+        if is_valid_date(tl)==False:
+            return HttpResponseNotFound(404)
+        
+        
+        desc = request.POST.get('description')
+        
+        name = request.user.username
+        try:
+            user_profile = UserProfile.objects.get(name=name)
+            user_profile.delete()
+        except:
+            print('Gak ada')
+        
+        try:
+            user_with_role = UserWithRole.objects.get(user=request.user)
+        except:
+            return HttpResponseRedirect(reverse('authentication:login'))
+        role = user_with_role.role
 
-        user_profile = UserProfile.objects.get(user=request.user)
-
-        user_profile.name = name
-        user_profile.status = status
-        user_profile.tanggal_lahir = tanggal_lahir
-        user_profile.description = description
-        user_profile.foto_profil = foto_profil
-        user_profile.save()
+        new_item = UserProfile(name=name, role=role, tanggal_lahir=tl, description=desc)
+        new_item.save()
 
         return HttpResponse(b"CREATED", status=201)
 
@@ -73,12 +87,26 @@ def get_profilUser_json(request):
     profil_user = UserProfile.objects.all()
     return HttpResponse(serializers.serialize('json', profil_user))
 
+def get_user_profile_by_name(request):
+    name = request.user.username
+    try:
+        user_profile = UserProfile.objects.filter(name=name)
+        return HttpResponse(serializers.serialize('json', user_profile))
+    except:
+        user_with_role = UserWithRole.objects.get(user=request.user)
+        role = user_with_role.role
+        user_profile = UserProfile(name=name, role=role, tanggal_lahir="", description="")
+        user_profile.save()
+        user_profile = [user_profile]
+        print("BIKIN USER PROFILE BARU")
+        return HttpResponse(serializers.serialize('json', user_profile))
+
+
 def get_favorites(request):
     # book = Buku.objects.get(pk=id)
     
     favorite_books = Favorit.objects.filter(user=request.user)
     
-    print("Favoriteee: ", favorite_books)
     return HttpResponse(serializers.serialize('json', favorite_books))
     
 
@@ -121,3 +149,14 @@ def add_favorit(request, id_book):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+
+def is_valid_date(date_string):
+    date_format = "%d/%m/%Y"
+    try:
+        # Attempt to parse the date using the provided format
+        datetime.strptime(date_string, date_format)
+        return True
+    except ValueError:
+        # If parsing fails, it's not a valid date
+        return False
