@@ -4,6 +4,16 @@
 {% endblock meta %}
 
 {% block content %}
+<title>Wishlist Buku</title>
+<nav class="navbar navbar-expanded-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white font-monospace" href="#">List Buku</a>
+        <a href="{% url 'Homepage:show_homepage'%}" style="text-decoration: none;" class="mx-2">
+            <button type="button" class="btn btn-primary">Back</button>
+        </a>
+    </div>
+    
+</nav>
  <!-- Your existing code for the profile information -->
  <title>Wish List</title>
  <nav class="navbar navbar-expanded-lg bg-dark">
@@ -18,7 +28,7 @@
  <div id="wishlist_saya"></div> 
  
  <h1>Pilih wishlist</h1>
- <div class="row row-cols-1 row-cols-md-3 g-4 py-3 justify-content-center">
+<div class="row row-cols-1 row-cols-md-3 g-4 py-3 justify-content-center">
      {% for book in books %}
      <div class="col mx-5">
          <div class="card">
@@ -76,7 +86,7 @@
                         <strong>Penerbit</strong>: ${book.fields.publisher} <br>
                     </div>
                     <a>
-                        <button class="form-control btn btn-primary fw-bold" onclick="deleteWishlist(${book.pk})">
+                        <button class="form-control btn btn-primary fw-bold" onclick=delete_wishlist_js(${book.pk})>
                             Delete
                         </button>
                     </a>
@@ -105,10 +115,11 @@
         return false
     }
 
-    async function deletewishlist(id) {
+    async function delete_wishlist_js(id) {
         fetch(`delete_wishlist/${id}/`, {
             method: "DELETE",
         }).then(refreshProfil)
+
         return false
     }
     refreshProfil()
