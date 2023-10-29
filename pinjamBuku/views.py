@@ -70,3 +70,5 @@ def borrow_books(request, id_book):
 
 
 
+    return HttpResponseNotFound()
+

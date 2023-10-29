@@ -38,6 +38,15 @@
 {%endblock meta%}
 
 {% block content %}
+<nav class="navbar navbar-expanded-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white font-monospace" href="#">Profil</a>
+        <a href="{% url 'Homepage:show_homepage'%}" style="text-decoration: none;" class="mx-2">
+            <button type="button" class="btn btn-primary">Back</button>
+        </a>
+    </div>
+    
+</nav>
 
     <div class="profile-container">
         <div class="profile-header">
@@ -91,10 +100,17 @@
     </div>
 
  <!-- Your existing code for the profile information -->
-<h1>List Buku Favorit</h1>
+<div class="justify-content-center">
+    <h1 class="text-center">List Buku Favorit</h1>
+</div>
 <div id="list_buku_favorit"></div> 
 
-<h1>Pilih Buku Favorit Saya</h1>
+<br>
+<br>
+
+<div class="justify-content-center">
+    <h1 class="text-center">Pilih Buku Favorit Saya</h1>
+</div>
 <div class="row row-cols-1 row-cols-md-3 g-4 py-3 justify-content-center">
     {% for book in books %}
     <div class="col mx-5">
