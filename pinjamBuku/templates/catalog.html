@@ -104,7 +104,9 @@ if (filteredBooks.length === 0) {
                     <strong>Tanggal Publikasi</strong>: ${book.fields.publication_date} <br>
                     <strong>Penerbit</strong>: ${book.fields.publisher} <br>
                 </div>
+
                 <a>
+
                     <button class="form-control btn btn-primary fw-bold" onclick="borrowBooks(${book.pk})">
                         Pinjam Buku Ini
                     </button>
@@ -113,32 +115,6 @@ if (filteredBooks.length === 0) {
         </div>
         `
     })
-
-    function borrowBooks(id_book) {
-    fetch(`borrow-books/${id_book}/`, {
-        method: "POST",
-        body: new FormData(document.querySelector('#form'))
-    })
-    .then(response => {
-        if (response.status === 201) {
-            // Buku berhasil dipinjam, tampilkan notifikasi
-            const notification = document.getElementById('notification');
-            notification.style.display = 'block'; // Tampilkan notifikasi
-            setTimeout(function () {
-                notification.style.display = 'none'; // Sembunyikan notifikasi setelah beberapa detik
-            }, 3000); // Sembunyikan notifikasi setelah 3 detik
-            refreshBooks(); // Perbarui tampilan buku setelah berhasil dipinjam
-        } else {
-            // Tampilkan pesan kesalahan jika ada
-            console.error("Gagal meminjam buku");
-        }
-    })
-    .catch(error => {
-        console.error("Gagal meminjam buku:", error);
-    });
-}
-
-
 
     htmlString += `\n
     </div>
@@ -150,6 +126,32 @@ if (filteredBooks.length === 0) {
 
 
 refreshBooks()
+
+function borrowBooks(id_book) {
+        console.log(id_)
+        fetch(`borrow-books/${id_book}/`, {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        })
+        .then(response => {
+            console.log("HAIIIIII")
+            if (response.status === 201) {
+                // Buku berhasil dipinjam, tampilkan notifikasi
+                const notification = document.getElementById('notification');
+                notification.style.display = 'block'; // Tampilkan notifikasi
+                setTimeout(function () {
+                    notification.style.display = 'none'; // Sembunyikan notifikasi setelah beberapa detik
+                }, 3000); // Sembunyikan notifikasi setelah 3 detik
+                refreshBooks(); // Perbarui tampilan buku setelah berhasil dipinjam
+            } else {
+                // Tampilkan pesan kesalahan jika ada
+                console.error("Gagal meminjam buku");
+            }
+        })
+        .catch(error => {
+            console.error("Gagal meminjam buku:", error);
+        });
+    }
 
     </script>
 
