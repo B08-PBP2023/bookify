@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta}
+    
+{% endblock meta}
+
+{% block content %}
+    <title>User Information List</title>
+    <nav class="navbar navbar-expanded-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white font-monospace" href="#">List User</a>
+            <a href="{% url 'Homepage:show_homepage'%}" style="text-decoration: none;" class="mx-2">
+                <button type="button" class="btn btn-primary">Back</button>
+            </a>
+        </div>
+        
+    </nav>
+
+
+    <div id="book_cards"></div>
+
+    <script src="{% static 'js/showuser_admin.js' %}"></script>
+
+{% endblock content %}

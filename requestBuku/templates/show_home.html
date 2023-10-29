@@ -5,7 +5,7 @@
 {% endblock meta}
 
 {% block content %}
-    <title>Ulasan Buku</title>
+    <title>Request Buku</title>
     <nav class="navbar navbar-expanded-lg bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand text-white font-monospace" href="#">List Buku</a>
@@ -27,6 +27,13 @@
             
     </div>
 
+    <div class="container text-center"> 
+        <a href="{% url 'requestBuku:book_request' %}">
+            <button class="btn btn-primary btn-lg">
+                + Request Buku
+            </button>
+        </a>
+    </div>
     <div id="book_cards"></div>
 
     <script src="{% static 'js/home.js' %}"></script>
@@ -53,11 +60,5 @@
     </div>
     
     {% endcomment %}
-    <a href="{% url 'requestBuku:book_request' %}">
-        <button class="form-control btn btn-primary fw-bold">
-            Request Buku
-        </button>
-    </a>
-    
 
 {% endblock content %}
