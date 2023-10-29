@@ -30,8 +30,7 @@ def show_borrow_books(request):
 
 
 def get_borrowed_books(request):    
-    borrowed_books = Buku.objects.filter(user=request.user)
-    
+    borrowed_books = Pinjaman.objects.filter(user=request.user)
     print("Borrowed: ", borrowed_books)
     return HttpResponse(serializers.serialize('json', borrowed_books))
     
@@ -39,7 +38,7 @@ def get_borrowed_books(request):
 @csrf_exempt
 def delete_borrowed_books(request,id):
     if request.method == 'DELETE':
-        data = Buku.objects.get(pk=id)
+        data = Pinjaman.objects.get(pk=id)
         data.delete()
 
         return HttpResponse(b"DELETE", status=201)
@@ -51,7 +50,7 @@ def borrow_books(request, id_book):
     print("TESTTTTTTTTTTTTTTTTTTT")
     buku = Buku.objects.get(pk=id_book)
     
-    existing_borrowed = Buku.objects.filter( id=id_book).first()
+    existing_borrowed = Pinjaman.objects.filter( id=id_book).first()
 
     if existing_borrowed:
         new_item = Pinjaman( user=request.user, id_book=buku.pk, title=buku.title, authors=buku.authors, language_code=buku.language_code, num_pages=buku.num_pages, publication_date=buku.publication_date, publisher=buku.publisher)

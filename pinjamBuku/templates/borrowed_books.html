@@ -33,17 +33,14 @@
         <input  type="radio" id="filter_penulis" name="option" value="Penulis">Penulis
         
     </div>
+    <div id="book_cards"> </div>
 
 
-    <div id="book_cards"></div>
-    <div id="notification" style="display: none;" class="alert alert-success">
-        Buku berhasil dipinjam!
-    </div>
     
 
     <script>
         async function getBooks() {
-    return fetch(`get_books`).then((res) => res.json())
+    return fetch(`get_borrowed_books`).then((res) => res.json())
 }
 
 async function refreshBooks() {
@@ -54,32 +51,32 @@ async function refreshBooks() {
 
     const selectedOption = document.querySelector('input[name="option"]:checked');
     let filteredBooks = books
-if (selectedOption) {
-    if(selectedOption.value=="Judul"){
-        filteredBooks = books.filter(book => {
-            return book.fields.title.toLowerCase().includes(searchInput.toLowerCase());
-        });
-    } else if(selectedOption.value=="Tahun terbit"){
-        filteredBooks = books.filter(book => {
-            return book.fields.publication_date.split('/')[2].toLowerCase().includes(searchInput.toLowerCase());
-        });
-    } else if(selectedOption.value=="Penulis"){
-        filteredBooks = books.filter(book => {
-            return book.fields.authors.toLowerCase().includes(searchInput.toLowerCase());
-        });
+    if (selectedOption) {
+        if(selectedOption.value=="Judul"){
+            filteredBooks = books.filter(book => {
+                return book.fields.title.toLowerCase().includes(searchInput.toLowerCase());
+            });
+        } else if(selectedOption.value=="Tahun terbit"){
+            filteredBooks = books.filter(book => {
+                return book.fields.publication_date.split('/')[2].toLowerCase().includes(searchInput.toLowerCase());
+            });
+        } else if(selectedOption.value=="Penulis"){
+            filteredBooks = books.filter(book => {
+                return book.fields.authors.toLowerCase().includes(searchInput.toLowerCase());
+            });
+        }
+        
+    } else {
+        alert("No option selected");
     }
-    
-} else {
-    alert("No option selected");
-}
 
-if (filteredBooks.length === 0) {
-    document.getElementById('book_cards').innerHTML = `
-        <div class="text-center" style="font-size: 20px; margin: 20px;">
-            No books found that match your filter criteria.
-        </div>`;
-    return;
-}
+    if (filteredBooks.length === 0) {
+        document.getElementById('book_cards').innerHTML = `
+            <div class="text-center" style="font-size: 20px; margin: 20px;">
+                No books found that match your filter criteria.
+            </div>`;
+        return;
+    }
 
     
     console.log(searchInput)
@@ -94,7 +91,7 @@ if (filteredBooks.length === 0) {
         <div class="col mx-5">
             <div class="card">
                 <div class="card-header text-center fw-semibold bg-success text-white">
-                    Buku ${book.pk}
+                    Buku ${id_book}
                 </div>
                 <div class="card-body text-center">
                     <strong>Judul</strong>: ${book.fields.title} <br>
@@ -104,8 +101,8 @@ if (filteredBooks.length === 0) {
                     <strong>Tanggal Publikasi</strong>: ${book.fields.publication_date} <br>
                     <strong>Penerbit</strong>: ${book.fields.publisher} <br>
                 </div>
-                <a href="borrow-books/${book.pk}">
-                    <button class="form-control btn btn-primary fw-bold" onclick="borrowBooks(${book.pk})">
+                <a href="delete-borrowed-books/${book.pk}">
+                    <button class="form-control btn btn-primary fw-bold" onclick="deleteBorrowedBooks(${book.pk})">
                         Kembalikan Buku Ini
                     </button>
                 </a>
@@ -125,31 +122,13 @@ if (filteredBooks.length === 0) {
 
 refreshBooks()
 
-function borrowBooks(id_book) {
-        console.log(id_)
-        fetch(`borrow-books/${id_book}/`, {
-            method: "POST",
-            body: new FormData(document.querySelector('#form'))
-        })
-        .then(response => {
-            console.log("HAIIIIII")
-            if (response.status === 201) {
-                // Buku berhasil dipinjam, tampilkan notifikasi
-                const notification = document.getElementById('notification');
-                notification.style.display = 'block'; // Tampilkan notifikasi
-                setTimeout(function () {
-                    notification.style.display = 'none'; // Sembunyikan notifikasi setelah beberapa detik
-                }, 3000); // Sembunyikan notifikasi setelah 3 detik
-                refreshBooks(); // Perbarui tampilan buku setelah berhasil dipinjam
-            } else {
-                // Tampilkan pesan kesalahan jika ada
-                console.error("Gagal meminjam buku");
-            }
-        })
-        .catch(error => {
-            console.error("Gagal meminjam buku:", error);
-        });
+function deleteborrowedBooks(id_book) {
+        fetch(`delete_borrowed_books/${id_book}/`, {
+            method: "DELETE",
+        }).then(refreshBooks)
+        return false
     }
+      
 
     </script>
 
