@@ -46,7 +46,7 @@ def create_profil(request):
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
-            profile.save()
+            
             return redirect('profile')
     else:
         form = UserProfileForm()
@@ -90,7 +90,9 @@ def get_profilUser_json(request):
 def get_user_profile_by_name(request):
     name = request.user.username
     try:
-        user_profile = UserProfile.objects.filter(name=name)
+        user_profile = UserProfile.objects.get(name=name)
+        print("UDAH ADAA")
+        user_profile = [user_profile]
         return HttpResponse(serializers.serialize('json', user_profile))
     except:
         user_with_role = UserWithRole.objects.get(user=request.user)
