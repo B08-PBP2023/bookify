@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-check my-3 justify-content-center">
-        <input type="radio" id="filter_judul" name="option" value="Judul">Judul<br>
+        <input type="radio" id="filter_judul" name="option" value="Judul" checked>Judul<br>
         <input  type="radio" id="filter_tahun" name="option"value="Tahun terbit">Tahun terbit<br>
         <input  type="radio" id="filter_penulis" name="option" value="Penulis">Penulis
         
@@ -40,7 +40,7 @@
 
     <script>
         async function getBooks() {
-    return fetch(`get_borrowed_books`).then((res) => res.json())
+    return fetch(`../get_borrowed_books`).then((res) => res.json())
 }
 
 async function refreshBooks() {
@@ -48,6 +48,8 @@ async function refreshBooks() {
     
     const books = await getBooks();
     const searchInput = document.getElementById("filter_buku").value
+
+    console.log(books)
 
     const selectedOption = document.querySelector('input[name="option"]:checked');
     let filteredBooks = books
@@ -70,7 +72,7 @@ async function refreshBooks() {
         alert("No option selected");
     }
 
-    if (filteredBooks.length === 0) {
+    if (filteredBooks.length == 0) {
         document.getElementById('book_cards').innerHTML = `
             <div class="text-center" style="font-size: 20px; margin: 20px;">
                 No books found that match your filter criteria.
@@ -91,7 +93,7 @@ async function refreshBooks() {
         <div class="col mx-5">
             <div class="card">
                 <div class="card-header text-center fw-semibold bg-success text-white">
-                    Buku ${id_book}
+                    Buku ${book.fields.id_book}
                 </div>
                 <div class="card-body text-center">
                     <strong>Judul</strong>: ${book.fields.title} <br>
@@ -101,8 +103,8 @@ async function refreshBooks() {
                     <strong>Tanggal Publikasi</strong>: ${book.fields.publication_date} <br>
                     <strong>Penerbit</strong>: ${book.fields.publisher} <br>
                 </div>
-                <a href="delete-borrowed-books/${book.pk}">
-                    <button class="form-control btn btn-primary fw-bold" onclick="deleteBorrowedBooks(${book.pk})">
+                <a>
+                    <button class="form-control btn btn-primary fw-bold" onclick="deleteborrowedBooks(${book.fields.id_book})">
                         Kembalikan Buku Ini
                     </button>
                 </a>
@@ -123,7 +125,7 @@ async function refreshBooks() {
 refreshBooks()
 
 function deleteborrowedBooks(id_book) {
-        fetch(`delete_borrowed_books/${id_book}/`, {
+        fetch(`../delete_borrowed_books/${id_book}/`, {
             method: "DELETE",
         }).then(refreshBooks)
         return false
