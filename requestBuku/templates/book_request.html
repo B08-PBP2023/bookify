@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Request any book here!</title>
+</head>
+<body>
+    <h1>Request Your Book Here!</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <!-- {{ form.as_p }} -->
+            <!-- <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Title</h5>
+                    {{ form.title_input }}
+                    <h5 class="card-title">Author</h5>
+                    {{ form.author_input }}
+                    <h5 class="card-title">Language Code</h5>
+                    {{ form.language_code_input }}
+                    <h5 class="card-title">Publication Date</h5>
+                    {{ form.publication_date_input }}
+                </div>
+            </div> -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Title</h5>
+                    <input type="text" class="form-control" name="title" id="title_input">
+                    <h5 class="card-title">Author</h5>
+                    <input type="text" class="form-control" name="authors" id="author_input">
+                    <h5 class="card-title">Language Code</h5>
+                    <input type="text" class="form-control" name="language_code" id="language_code_input">
+                    <h5 class="card-title">Publication Date</h5>
+                    <input type="date" class="form-control" name="publication_date" id="publication_date_input">
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</body>
+</html>
