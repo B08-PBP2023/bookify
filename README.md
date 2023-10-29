@@ -1,5 +1,7 @@
 # Bookify
 **Empowering Literacy through Digital Pages**
+
+http://bookify-b08-tk.pbp.cs.ui.ac.id/
 ![Alt text](static/png/bookify-logo.png)
 
 
@@ -77,4 +79,8 @@ Halaman `FAQ` ini berisi daftar pertanyaan beserta jawaban untuk masing-masing b
 ## Sumber Dataset 📁
 Kami mengambil dataset buku dari Kaggle.
 https://www.kaggle.com/datasets/jealousleopard/goodreadsbooks/
+
+## Bonus
+<label> Pipeline status </label>
+ ![Pipeline Status](https://github.com/B08-PBP2023/actions/workflows/dpl.yml/badge.svg)
 
