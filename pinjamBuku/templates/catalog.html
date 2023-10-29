@@ -34,6 +34,7 @@
         
     </div>
 
+    
 
     <div id="book_cards"></div>
     <div id="notification" style="display: none;" class="alert alert-success">
@@ -105,8 +106,7 @@ if (filteredBooks.length === 0) {
                     <strong>Penerbit</strong>: ${book.fields.publisher} <br>
                 </div>
 
-                <a>
-
+                <a href="show_borrow_books/"> 
                     <button class="form-control btn btn-primary fw-bold" onclick="borrowBooks(${book.pk})">
                         Pinjam Buku Ini
                     </button>
@@ -127,11 +127,11 @@ if (filteredBooks.length === 0) {
 
 refreshBooks()
 
-function borrowBooks(id_book) {
-        console.log(id_)
+async function borrowBooks(id_book) {
+        
         fetch(`borrow-books/${id_book}/`, {
             method: "POST",
-            body: new FormData(document.querySelector('#form'))
+        
         })
         .then(response => {
             console.log("HAIIIIII")
@@ -143,6 +143,9 @@ function borrowBooks(id_book) {
                     notification.style.display = 'none'; // Sembunyikan notifikasi setelah beberapa detik
                 }, 3000); // Sembunyikan notifikasi setelah 3 detik
                 refreshBooks(); // Perbarui tampilan buku setelah berhasil dipinjam
+
+                
+
             } else {
                 // Tampilkan pesan kesalahan jika ada
                 console.error("Gagal meminjam buku");

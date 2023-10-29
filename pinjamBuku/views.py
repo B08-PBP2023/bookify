@@ -23,6 +23,7 @@ def show_page(request):
     return render(request, "catalog.html", context)
 
 def show_borrow_books(request):
+    print("DIRECTT")
     context = {
 
     }
@@ -37,8 +38,9 @@ def get_borrowed_books(request):
 
 @csrf_exempt
 def delete_borrowed_books(request,id):
+    print("KEMBALIKANNN")
     if request.method == 'DELETE':
-        data = Pinjaman.objects.get(pk=id)
+        data = Pinjaman.objects.get(id_book=id)
         data.delete()
 
         return HttpResponse(b"DELETE", status=201)
@@ -50,25 +52,16 @@ def borrow_books(request, id_book):
     print("TESTTTTTTTTTTTTTTTTTTT")
     buku = Buku.objects.get(pk=id_book)
     
-    existing_borrowed = Pinjaman.objects.filter( id=id_book).first()
+    existing_borrowed = Pinjaman.objects.filter( id_book=id_book).first()
 
     if existing_borrowed:
-        new_item = Pinjaman( user=request.user, id_book=buku.pk, title=buku.title, authors=buku.authors, language_code=buku.language_code, num_pages=buku.num_pages, publication_date=buku.publication_date, publisher=buku.publisher)
-        new_item.save()
-        return redirect('pinjamBuku:show_borrow_books')
+        print("YAAAAAAAAAAA")
+        return HttpResponseNotFound()
     
-    print(buku.title)
-    print(type(id_book))
-        
-        # title = models.TextField(null=True, blank=True)
-        # authors = models.TextField(null=True, blank=True)
-        # language_code = models.TextField(null=True, blank=True)
-        # num_pages = models.IntegerField(null=True, blank=True)
-        # publication_date = models.TextField(null=True, blank=True)
-        # publisher = models.TextField(null=True, blank=True)
+    new_item = Pinjaman( user=request.user, id_book=buku.pk, title=buku.title, authors=buku.authors, language_code=buku.language_code, num_pages=buku.num_pages, publication_date=buku.publication_date, publisher=buku.publisher)
+    new_item.save()
+    return HttpResponse(b"DELETE", status=201)
     
-
-
-
-    return HttpResponseNotFound()
+    
+    
 
