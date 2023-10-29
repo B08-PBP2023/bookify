@@ -22,7 +22,8 @@ def register(request):
       form = CustomUserCreationForm(request.POST)
       if form.is_valid():
           user = form.save()
-          profile = UserWithRole(user=user, role=form.cleaned_data['role'])
+          print()
+          profile = UserWithRole(user=user, name=user.username, role=form.cleaned_data['role'])
           profile.save()
           messages.success(request, 'Your account has been successfully created')
           return redirect('authentication:login')
@@ -35,13 +36,16 @@ def login_user(request):
   if request.method == 'POST':
       username = request.POST.get('username')
       password = request.POST.get('password')
+      print("AA")
       user = authenticate(request, username=username, password=password)
       if user is not None:
           login(request, user) 
+          print("BBB")
           response = HttpResponseRedirect(reverse("Homepage:show_homepage")) 
           response.set_cookie('last_login', str(datetime.datetime.now())) 
           return response
       else:
+          print("ADMINNN")
           messages.info(request, 'Username atau Password salah!')
   context = {}
   return render(request, 'login.html', context)

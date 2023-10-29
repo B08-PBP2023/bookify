@@ -6,9 +6,10 @@ from django.urls import reverse
 from authentication.models import UserWithRole
 from django.core import serializers
 from pinjamBuku.models import Buku
+from django.contrib.auth.models import User
 
 # Create your views here.
-list_of_admins = ['adminbookify']
+list_of_admins = ['adminbookify','adminreal']
 
 @login_required(login_url='/authentication/login/')
 def show_homepage(request):
@@ -27,11 +28,19 @@ def show_homepage(request):
 
     return render(request, "homepage.html", context)
 
+@login_required(login_url='/authentication/login/')
+def show_user(request):
+    if(request.user.username not in list_of_admins):
+        return HttpResponseNotFound()
+    context = {
+
+    }
+    return render(request, "showuser_admin.html", context)
+
 def show_homepage_guest(request):
     context = {
 
     }
-
     return render(request, "homepage_guest.html", context)
 
 @login_required(login_url='/authentication/login/')
@@ -51,3 +60,18 @@ def get_books(request):
     books = Buku.objects.all()
 
     return HttpResponse(serializers.serialize('json', books))
+
+def get_user(request):
+    users = UserWithRole.objects.exclude(name__in=list_of_admins)
+
+    return HttpResponse(serializers.serialize('json', users))
+
+def get_user_with_role_by_name(request):
+    name = request.user.username
+    
+    user_with_role = UserWithRole.objects.get(name=name)
+    user_with_role = [user_with_role]
+
+    return HttpResponse(serializers.serialize('json', user_with_role))
+    
+        

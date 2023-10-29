@@ -5,6 +5,15 @@
 
 {% block content %}
  <!-- Your existing code for the profile information -->
+ <title>Wish List</title>
+ <nav class="navbar navbar-expanded-lg bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white font-monospace" href="#">List Buku</a>
+        <a href="{% url 'Homepage:show_homepage'%}" style="text-decoration: none;" class="mx-2">
+        </a>
+    </div>
+</nav>
+
  <h1>Wishlist saya</h1>
  <div id="wishlist_saya"></div> 
  
@@ -25,7 +34,7 @@
                  <strong>Penerbit</strong>: {{ book.publisher }} <br>
              </div>
              <a>
-                 <button class="form-control btn btn-primary fw-bold" onclick="add_wishlist({{book.pk}})">
+                 <button class="form-control btn btn-primary fw-bold" onclick="add_wishlist_js({{book.pk}})">
                      Tambahkan ke Wishlist
                  </button>
              </a>
@@ -35,10 +44,6 @@
  </div>
 
   <script>
-    async function getProfil() {
-        return fetch ("{% url 'BacaDanWishlist:get_profilUser_json'}").then((res) => res.json())
-    }
-
     async function getwishlist() {
       return fetch(`get_wishlist/`).then((res) => res.json())
     }
@@ -89,15 +94,14 @@
     }
 
     console.log("test1")
-    function add_wishlist(id_book) {
+
+    function add_wishlist_js(id_book) {
         console.log("test2")
 
         fetch(`add_wishlist/${id_book}/`, {
             method: "POST",
-            body: new FormData(document.querySelector('#form'))
         }).then(refreshProfil)
       
-        document.getElementById("form").reset()
         return false
     }
 

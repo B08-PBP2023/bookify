@@ -8,6 +8,6 @@ urlpatterns = [
   path('', show_page, name='show_page'),
   path('get_product/', get_profilUser_json, name='get_profilUser_json'),
   path('get_wishlist/', get_wishlist, name='get_wishlist'),
-  path('add_wishlist/<int:id>/', add_wishlist, name='add_wishlist'),
+  path('add_wishlist/<int:id_book>/', add_wishlist, name='add_wishlist'),
   path('delete_wishlist/<int:id>/', delete_wishlist, name='delete_wishlist'),
 ]

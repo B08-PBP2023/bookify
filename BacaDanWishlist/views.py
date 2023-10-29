@@ -55,7 +55,7 @@ def add_wishlist(request, id_book):
     print(buku.title)
     print(type(id_book))
 
-    new_item = Wishlist(user=request.user, id_book=id_book, title=buku.title, authors=buku.authors, Language_code=buku.language_code, num_pages=buku.num_pages, publication_date=buku.publication_date, publisher=buku.publisher)
+    new_item = Wishlist(user=request.user, id_book=id_book, title=buku.title, authors=buku.authors, language_code=buku.language_code, num_pages=buku.num_pages, publication_date=buku.publication_date, publisher=buku.publisher)
     new_item.save()
 
     return HttpResponse(b"CREATED", status=201)
