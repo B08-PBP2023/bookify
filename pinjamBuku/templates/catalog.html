@@ -28,7 +28,7 @@
     </div>
 
     <div class="form-check my-3 justify-content-center">
-        <input type="radio" id="filter_judul" name="option" value="Judul">Judul<br>
+        <input type="radio" id="filter_judul" name="option" value="Judul" checked>Judul<br>
         <input  type="radio" id="filter_tahun" name="option"value="Tahun terbit">Tahun terbit<br>
         <input  type="radio" id="filter_penulis" name="option" value="Penulis">Penulis
         
@@ -104,8 +104,8 @@ if (filteredBooks.length === 0) {
                     <strong>Tanggal Publikasi</strong>: ${book.fields.publication_date} <br>
                     <strong>Penerbit</strong>: ${book.fields.publisher} <br>
                 </div>
-                <a href="borrow-books/${book.pk}">
-                    <button class="form-control btn btn-primary fw-bold" onclick="borrow-books(${book.pk})">
+                <a>
+                    <button class="form-control btn btn-primary fw-bold" onclick="borrowBooks(${book.pk})">
                         Pinjam Buku Ini
                     </button>
                 </a>

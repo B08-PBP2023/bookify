@@ -25,7 +25,7 @@
                  <strong>Penerbit</strong>: {{ book.publisher }} <br>
              </div>
              <a>
-                 <button class="form-control btn btn-primary fw-bold" onclick="add_wishlist({{book.pk}})">
+                 <button class="form-control btn btn-primary fw-bold" onclick="add_wishlist_js({{book.pk}})">
                      Tambahkan ke Wishlist
                  </button>
              </a>
@@ -85,7 +85,8 @@
     }
 
     console.log("test1")
-    function add_wishlist(id_book) {
+
+    function add_wishlist_js(id_book) {
         console.log("test2")
 
         fetch(`add_wishlist/${id_book}/`, {

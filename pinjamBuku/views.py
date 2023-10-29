@@ -68,5 +68,6 @@ def borrow_books(request, id_book):
 
         return HttpResponse(b"CREATED", status=201)
 
+    print("TIDAK KETEMU")
     return HttpResponseNotFound()
 
