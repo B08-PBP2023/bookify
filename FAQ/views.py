@@ -17,7 +17,7 @@ def show_buku(request):
     books = Buku.objects.all()
 
     if(request.user.username in list_of_admins):
-        print('Success')
+
         context = {
             'books':books,
             'name':request.user.username,
@@ -163,7 +163,7 @@ def get_questions_by_id_json(request, id_question):
 
 def get_questions_answers_json(request):
     questions_answers = QuestionAnswer.objects.all()
-    print(questions_answers)
+
     
     return HttpResponse(serializers.serialize('json', questions_answers))
 
