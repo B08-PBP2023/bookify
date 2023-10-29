@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta}
+    
+{% endblock meta}
+
+{% block content %}
+    <title>Pinjam Buku</title>
+    <nav class="navbar navbar-expanded-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white font-monospace" href="#">Bookify</a>
+            <a href="{% url 'Homepage:show_homepage'%}" style="text-decoration: none;" class="mx-2">
+                <button type="button" class="btn btn-primary">Back</button>
+            </a>
+        </div>
+        
+    </nav>
+
+    <div class="container my-5">
+        
+        <div class="input-group">
+            <input id="filter_buku" class="form-control" type="search" placeholder="Filter buku berdasarkan..." aria-label="Search">
+            <div class="input-group-append">
+                <button id="button_filter" class="btn btn-warning" type="submit" onclick=refreshBooks()>Search</button>
+            </div>
+        </div>
+            
+    </div>
+
+    <div class="form-check my-3 justify-content-center">
+        <input type="radio" id="filter_judul" name="option" value="Judul">Judul<br>
+        <input  type="radio" id="filter_tahun" name="option"value="Tahun terbit">Tahun terbit<br>
+        <input  type="radio" id="filter_penulis" name="option" value="Penulis">Penulis
+        
+    </div>
+
+
+    <div id="book_cards"></div>
+    <div id="notification" style="display: none;" class="alert alert-success">
+        Buku berhasil dipinjam!
+    </div>
+    
+
+    <script>
+        async function getBooks() {
+    return fetch(`get_books`).then((res) => res.json())
+}
+
+async function refreshBooks() {
+    document.getElementById('book_cards').innerHTML = ``
+    
+    const books = await getBooks();
+    const searchInput = document.getElementById("filter_buku").value
+
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    let filteredBooks = books
+if (selectedOption) {
+    if(selectedOption.value=="Judul"){
+        filteredBooks = books.filter(book => {
+            return book.fields.title.toLowerCase().includes(searchInput.toLowerCase());
+        });
+    } else if(selectedOption.value=="Tahun terbit"){
+        filteredBooks = books.filter(book => {
+            return book.fields.publication_date.split('/')[2].toLowerCase().includes(searchInput.toLowerCase());
+        });
+    } else if(selectedOption.value=="Penulis"){
+        filteredBooks = books.filter(book => {
+            return book.fields.authors.toLowerCase().includes(searchInput.toLowerCase());
+        });
+    }
+    
+} else {
+    alert("No option selected");
+}
+
+if (filteredBooks.length === 0) {
+    document.getElementById('book_cards').innerHTML = `
+        <div class="text-center" style="font-size: 20px; margin: 20px;">
+            No books found that match your filter criteria.
+        </div>`;
+    return;
+}
+
+    
+    console.log(searchInput)
+
+
+    let htmlString = ``
+    htmlString += `\n
+    <div class="row row-cols-1 row-cols-md-3 g-4 py-3 justify-content-center">
+    `
+    filteredBooks.forEach((book) => {
+        htmlString += `\n
+        <div class="col mx-5">
+            <div class="card">
+                <div class="card-header text-center fw-semibold bg-success text-white">
+                    Buku ${book.pk}
+                </div>
+                <div class="card-body text-center">
+                    <strong>Judul</strong>: ${book.fields.title} <br>
+                    <strong>Penulis</strong>: ${book.fields.authors} <br>
+                    <strong>Bahasa</strong>: ${book.fields.language_code} <br>
+                    <strong>Jumlah Halaman</strong>: ${book.fields.num_pages} <br>
+                    <strong>Tanggal Publikasi</strong>: ${book.fields.publication_date} <br>
+                    <strong>Penerbit</strong>: ${book.fields.publisher} <br>
+                </div>
+                <a href="borrow-books/${book.pk}">
+                    <button class="form-control btn btn-primary fw-bold" onclick="borrowBooks(${book.pk})">
+                        Kembalikan Buku Ini
+                    </button>
+                </a>
+            </div>
+        </div>
+        `
+    })
+
+    htmlString += `\n
+    </div>
+    `
+    document.getElementById('book_cards').innerHTML = htmlString
+
+    
+}
+
+
+refreshBooks()
+
+function borrowBooks(id_book) {
+        console.log(id_)
+        fetch(`borrow-books/${id_book}/`, {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        })
+        .then(response => {
+            console.log("HAIIIIII")
+            if (response.status === 201) {
+                // Buku berhasil dipinjam, tampilkan notifikasi
+                const notification = document.getElementById('notification');
+                notification.style.display = 'block'; // Tampilkan notifikasi
+                setTimeout(function () {
+                    notification.style.display = 'none'; // Sembunyikan notifikasi setelah beberapa detik
+                }, 3000); // Sembunyikan notifikasi setelah 3 detik
+                refreshBooks(); // Perbarui tampilan buku setelah berhasil dipinjam
+            } else {
+                // Tampilkan pesan kesalahan jika ada
+                console.error("Gagal meminjam buku");
+            }
+        })
+        .catch(error => {
+            console.error("Gagal meminjam buku:", error);
+        });
+    }
+
+    </script>
+
+
+{% endblock content %}
+
