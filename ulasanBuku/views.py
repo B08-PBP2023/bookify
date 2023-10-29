@@ -60,7 +60,7 @@ def review_list(request, id):
         return render(request, 'ulasan_page.html', context)
 
 
-    reviews = Review.objects.filter(user=request.user, book=book)
+    reviews = Review.objects.filter(book=book)
 
     context = {
         'reviews' : reviews,
@@ -80,7 +80,7 @@ def show_buku_ulasan(request):
         'books':books,
     }
 
-    return render(request, 'show_buku_ulasan.html', context)
+    return render(request, 'show_buku_ulasan2.html', context)
 
 def add_ulasan(request, id_book):
     if request.method == 'POST':
