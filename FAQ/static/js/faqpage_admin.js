@@ -1,9 +1,9 @@
 const id_book = document.getElementById("id_for_book").value
 const filteredUrl = document.getElementById("filtered_url").dataset.url;
 
-async function getQuestionsAnswers() {
-    return fetch("{% url 'FAQ:get_questions_answers_json' %}").then((res) => res.json())
-}
+// async function getQuestionsAnswers() {
+//     return fetch("{% url 'FAQ:get_questions_answers_json' %}").then((res) => res.json())
+// }
 
 async function getQuestionsAnswersFiltered(id_book) {
     return fetch(filteredUrl).then((res) => res.json())

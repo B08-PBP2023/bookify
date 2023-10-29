@@ -1,9 +1,9 @@
 const id_book = document.getElementById("id_for_book").value
 const filteredUrl = document.getElementById("filtered_url").dataset.url;
 
-async function getQuestions() {
-    return fetch("{% url 'FAQ:get_questions_json' %}").then((res) => res.json())
-}
+// async function getQuestions() {
+//     return fetch("{% url 'FAQ:get_questions_json' %}").then((res) => res.json())
+// }
 
 async function getQuestionsFiltered(id_book) {
     return fetch(filteredUrl).then((res) => res.json())
@@ -37,7 +37,8 @@ async function refreshQuestions() {
                 <div class="card-footer d-flex justify-content-between">
 
                     <a>
-                        <button type="button" class="form-control btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#jawabanModal" onclick=setValueQuestion(${question.pk})>
+                        <button type="button" class="form-control btn btn-primary fw-bold" data-bs-toggle="modal" 
+                        data-bs-target="#jawabanModal" onclick=setValueQuestion(${question.pk})>
                             Jawab
                         </button>
             

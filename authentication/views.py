@@ -2,6 +2,8 @@ import datetime
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
+from .forms import CustomUserCreationForm
+from .models import UserWithRole
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 
@@ -14,12 +16,14 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def register(request):
-  form = UserCreationForm()
-
+  form = CustomUserCreationForm()
+  
   if request.method == "POST":
-      form = UserCreationForm(request.POST)
+      form = CustomUserCreationForm(request.POST)
       if form.is_valid():
-          form.save()
+          user = form.save()
+          profile = UserWithRole(user=user, role=form.cleaned_data['role'])
+          profile.save()
           messages.success(request, 'Your account has been successfully created')
           return redirect('authentication:login')
   

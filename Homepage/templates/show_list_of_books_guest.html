@@ -1,28 +1,22 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block meta}
-    <!-- <link rel="stylesheet" href="{% static 'css/faq_style.css' %}" > -->
+    
 {% endblock meta}
 
 {% block content %}
     <title>FAQ</title>
     <nav class="navbar navbar-expanded-lg bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand text-white font-monospace" href="#">Books List</a>
-            <a href="{% url 'Homepage:show_homepage'%}" style="text-decoration: none;" class="mx-2">
+            <a class="navbar-brand text-white font-monospace" href="#">List Buku</a>
+            <a href="{% url 'Homepage:show_homepage_guest'%}" style="text-decoration: none;" class="mx-2">
                 <button type="button" class="btn btn-primary">Back</button>
             </a>
         </div>
         
     </nav>
 
-    <div class="container my-3">
-        <div class="alert alert-info py-3 text-center">
-                Welcome, <strong>{{name}}</strong>! Because you have a role <strong>{{role}}</strong>, you can ask questions about a specific book.
-        </div>
-    </div>
-
-    <div class="container mt-3">
+    <div class="container my-5">
         
         <div class="input-group">
             <input id="filter_judul" class="form-control" type="search" placeholder="Masukkan judul buku..." aria-label="Search">
@@ -35,6 +29,6 @@
 
     <div id="book_cards"></div>
 
-    <script src="{% static 'js/show_buku.js' %}"></script>
+    <script src="{% static 'js/show_list_of_books.js' %}"></script>
 
 {% endblock content %}
