@@ -25,7 +25,7 @@ def book_request(request):
         if form.is_valid():
             form.instance.user = request.user  # Mengisi user dengan objek User saat menyimpan form.
             form.save()
-            return redirect('requestBuku:show_home')
+            return redirect('requestBuku:book_request')
     else:
         form = BookRequestForm()
     return render(request, 'book_request.html', {'form': form})
