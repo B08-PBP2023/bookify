@@ -10,8 +10,6 @@ from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
-@login_required  # Ensure the user is logged in to borrow a book
-
 def get_books(request):
     data = Buku.objects.all()
     return HttpResponse(serializers.serialize("json",data), content_type='application/json')
