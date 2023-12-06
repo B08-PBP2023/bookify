@@ -12,7 +12,7 @@ from django.urls import reverse
 from django.core import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login
-from django.views.decorators.csrf import csrf_exempts
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 @csrf_exempt
