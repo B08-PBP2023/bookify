@@ -1,7 +1,7 @@
 from django.urls import path
 from FAQ.views import show_page, add_question, view_list_questions, get_questions_json, delete_question, jawab_question, get_questions_answers_json
 from FAQ.views import delete_question_answer, show_page_admin, show_buku, get_questions_answers_filtered_json, get_questions_filtered_json, get_questions_by_id_json
-from FAQ.views import get_books
+from FAQ.views import get_books, add_question_flutter
 
 app_name = 'FAQ'
 
@@ -21,4 +21,5 @@ urlpatterns = [
     path('get_questions_by_id_json/<int:id_question>/', get_questions_by_id_json, name='get_questions_by_id_json'),
     path('get_questions_answers_json/', get_questions_answers_json, name='get_questions_answers_json'),
     path('get_questions_answers_filtered_json/<int:id>/', get_questions_answers_filtered_json, name='get_questions_answers_filtered_json'),
+    path('add_question_flutter/<int:id_book>/', add_question_flutter, name='add_question_flutter'),
 ]

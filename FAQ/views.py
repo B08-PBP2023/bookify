@@ -1,7 +1,8 @@
+import json
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from FAQ.models import Question, QuestionAnswer
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core import serializers
 from authentication.models import UserWithRole
 from pinjamBuku.models import Buku
@@ -127,6 +128,20 @@ def add_question(request, id_book):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+def add_question_flutter(request, id_book):
+    if request.method == 'POST':
+        buku = Buku.objects.get(pk=id_book)
+        data = json.loads(request.body)
+        isi_pertanyaan = data["isi_pertanyaan"]
+
+        new_item = Question(isi_pertanyaan=isi_pertanyaan, buku=buku)
+        new_item.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
 
 @csrf_exempt
 @login_required(login_url='/authentication/login/')
