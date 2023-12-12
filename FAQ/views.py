@@ -114,6 +114,26 @@ def jawab_question(request, id_book):
     return HttpResponseNotFound()
 
 @csrf_exempt
+def jawab_question_flutter(request, id_book):
+    if request.method == 'POST':
+        buku = Buku.objects.get(pk=id_book)
+        data = json.loads(request.body)
+
+        isi_pertanyaan = data["isi_pertanyaan"]
+        isi_jawaban = data["isi_jawaban"]
+        idQuestion = int(data["id_question"])
+
+        question = Question.objects.get(pk=idQuestion)
+        question.delete()
+
+        new_item = QuestionAnswer(isi_pertanyaan=isi_pertanyaan, isi_jawaban=isi_jawaban, buku = buku)
+        new_item.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+
+@csrf_exempt
 @login_required(login_url='/authentication/login/')
 def add_question(request, id_book):
     if request.method == 'POST':
@@ -153,6 +173,26 @@ def delete_question(request,id):
         return HttpResponse(b"DELETE", status=201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+def delete_question_flutter(request,id):
+    if request.method == 'POST':
+        data = Question.objects.get(pk=id)
+        data.delete()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+    
+@csrf_exempt
+def delete_question_answer_flutter(request,id):
+    if request.method == 'POST':
+        data = QuestionAnswer.objects.get(pk=id)
+        data.delete()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
 
 @csrf_exempt
 @login_required(login_url='/authentication/login/')
