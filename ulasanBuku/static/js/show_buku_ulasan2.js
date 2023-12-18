@@ -37,7 +37,7 @@ async function refreshBooks() {
                 </div>
                 <a href="review_list/${book.pk}">
                     <button class="form-control btn btn-primary fw-bold">
-                        Masukkan ulasan
+                        Lihat ulasan
                     </button>
                 </a>
             </div>
