@@ -10,10 +10,12 @@ from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
-@login_required  # Ensure the user is logged in to borrow a book
-
 def get_books(request):
     data = Buku.objects.all()
+    return HttpResponse(serializers.serialize("json",data), content_type='application/json')
+
+def get_books_by_judul(request, judul):
+    data = Buku.objects.filter(title__icontains=judul)
     return HttpResponse(serializers.serialize("json",data), content_type='application/json')
 
 def show_page(request):
