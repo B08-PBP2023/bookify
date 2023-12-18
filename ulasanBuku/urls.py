@@ -1,7 +1,7 @@
 from django.urls import path
 
 # Create your views here.
-from ulasanBuku.views import review_list, show_buku_ulasan, show_page, get_books, add_ulasan_flutter, get_ulasan_filtered_json
+from ulasanBuku.views import *
 app_name = 'ulasanBuku'
 
 urlpatterns = [

@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -10,6 +10,8 @@ from .forms import UserProfileForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+import json
+
 
 @login_required(login_url='/login')
 def show_page(request):
@@ -142,3 +144,106 @@ def is_valid_date(date_string):
     except ValueError:
         # If parsing fails, it's not a valid date
         return False
+
+@login_required
+def get_profile_flutter(request):
+    try:
+        user = request.user
+        user_profile = UserProfile.objects.get(name=user.username)
+        user_data = {
+            "username": user_profile.name,
+            "role": user_profile.role,
+            "tanggalLahir": user_profile.tanggal_lahir,
+            "description": user_profile.description,
+        }
+        return JsonResponse({"status": "success", "data": user_data}, status=200)
+    except UserProfile.DoesNotExist:
+        return JsonResponse({"status": "error", 'msg': 'User tidak ditemukan'}, status=404)
+    except Exception as e:
+        return JsonResponse({"status": "error", 'msg': str(e)}, status=500)
+
+
+@login_required 
+def edit_profile_flutter(request):
+    try:
+        user = request.user
+        print("mm")
+        user_profile = UserProfile.objects.get(name=user.username)
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            new_tanggal_lahir = data['tanggal_lahir']
+            new_description = data['description']
+            
+            if new_tanggal_lahir is not None:
+                user_profile.tanggal_lahir = new_tanggal_lahir
+            if new_description is not None:
+                user_profile.description = new_description
+
+            # Save changes to the user profile
+            user_profile.save()
+            user_data = {
+             "username" : user_profile.name,
+             "role" : user_profile.role,
+             "tanggalLahir" : user_profile.tanggal_lahir,
+             "description" : user_profile.description,
+        }
+            return JsonResponse({"status": "success", "msg" : "data user berhasil diubah", "data" : user_data}, status=200)
+    except User.DoesNotExist:
+            return JsonResponse({"status" : "error", 'msg': 'user tidak ada silahkan login'}, status=401)
+    except User.DoesNotExist:
+        return JsonResponse({"status" : "error", 'msg': 'user profile tidak ada '}, status=404)
+    except Exception as e:
+            return JsonResponse({"status" : "error", 'msg': str(e)}, status=500)    
+    
+@login_required
+def add_favorit_flutter(request, book_id):
+    if request.method == 'POST':
+        user = request.user
+        try:
+            buku = Buku.objects.get(pk=book_id)
+            if not Favorit.objects.filter(user=user, id_book=buku.pk).exists():
+                favorite = Favorit(user=user, id_book=buku.pk, title = buku.title, authors = buku.authors, language_code = buku.language_code,
+                                   num_pages = buku.num_pages, publication_date = buku.publication_date,publisher = buku.publisher)
+                favorite.save()
+                return JsonResponse({'status' : 'success', 'msg': 'Add to Favorite successfully'}, status=200)
+            else:
+                return JsonResponse({'status' : 'failed', 'msg': 'Book is already favorited'}, status=400)
+        except Buku.DoesNotExist:
+            return JsonResponse({'status' : 'failed', 'msg': 'Book not found'}, status=400)
+    return JsonResponse({'status' : 'failed', 'msg': 'Invalid request'}, status=400)
+
+@login_required
+def get_favorite_by_user_flutter(request):
+    user = request.user
+
+    print(user.username)
+    favorites = Favorit.objects.filter(user = user).all()
+    user_favorites = []
+    for buku in favorites:
+        user_favorites.append({
+            'user_id' : buku.user.pk,
+            'id_book' : buku.id_book,
+            'authors' : buku.authors,
+            'title' : buku.title,
+            'language_code' : buku.language_code,
+            'num_pages' : buku.num_pages,
+            'publication_date' : buku.publication_date,
+            'publisher' : buku.publisher,
+        })
+    return JsonResponse({'status' : 'success','data' : user_favorites} , content_type="application/json")
+
+@login_required
+def delete_favorite_flutter(request, book_id):
+    if request.method == 'POST':
+        user = request.user
+        try:
+            buku = Buku.objects.get(pk=book_id)
+            favorite = Favorit.objects.filter(user=user, id_book=buku.pk).first()
+            if favorite:
+                favorite.delete()
+                return JsonResponse({'status' : 'success','msg': 'Removed from Favorite successfully'}, status=200)
+            else:
+                return JsonResponse({'status' : 'failed', 'msg': 'Book is not favorited'}, status=400)
+        except Buku.DoesNotExist:
+            return JsonResponse({'status' : 'failed', 'msg': 'Book not found'}, status=400)
+    return JsonResponse({'status' : 'failed', 'msg': 'Invalid request'}, status=400)
