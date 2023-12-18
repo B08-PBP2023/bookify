@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 # Create your views here.
 from django.shortcuts import render, redirect
@@ -10,6 +10,8 @@ from .forms import ReviewForm  # Anda perlu membuat form terlebih dahulu
 from pinjamBuku.models import Buku
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
+
+import json
 
 @login_required
 
@@ -95,3 +97,25 @@ def add_ulasan(request, id_book):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+def add_ulasan_flutter(request, id_book):
+    if request.method == 'POST':
+        book = Buku.objects.get(pk=id_book)
+        data = json.loads(request.body)
+        isi_ulasan = data["isi_ulasan"]
+
+        new_item = Review(isi_ulasan=isi_ulasan, book=book)
+        new_item.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)
+    
+def get_ulasan_filtered_json(request, id):
+    book = Buku.objects.get(pk=id)
+    judul_book = book.title
+    
+    isi_ulasan = Review.objects.filter(book = book)
+    
+    return HttpResponse(serializers.serialize('json', isi_ulasan))

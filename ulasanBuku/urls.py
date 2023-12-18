@@ -1,8 +1,7 @@
 from django.urls import path
 
 # Create your views here.
-from ulasanBuku.views import review_list, show_buku_ulasan, show_page, get_books
-
+from ulasanBuku.views import review_list, show_buku_ulasan, show_page, get_books, add_ulasan_flutter, get_ulasan_filtered_json
 app_name = 'ulasanBuku'
 
 urlpatterns = [
@@ -16,6 +15,8 @@ urlpatterns = [
     # path('create_review/', create_review, name='create_review'),
     path('review_list/<int:id>/', review_list, name='review_list'),
     path('', show_buku_ulasan, name='show_buku_ulasan'),
+    path('add_ulasan_flutter/<int:id_book>/', add_ulasan_flutter, name='add_ulasan_flutter'),
+    path('get_ulasan_filtered_json/<int:id_book>/', get_ulasan_filtered_json, name='get_ulasan_filtered_json'),
     
     # Mungkin Anda juga ingin menambahkan URL lain sesuai kebutuhan aplikasi Anda.
 ]
