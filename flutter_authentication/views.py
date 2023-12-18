@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.models import User
-
+from profilUser.models import UserProfile
 @csrf_exempt
 def login(request):
     username = request.POST['username']
@@ -65,6 +65,9 @@ def register(request):
 
         new_user = User.objects.create_user(username = username, password = password1)
         new_user.save()
+        new_profile = UserProfile.objects.create(
+        name=new_user.username, role='Regular')
+        new_profile.save()
         return JsonResponse({"status": "success"}, status=200)
     else:
         return JsonResponse({"status": "error"}, status=401)
