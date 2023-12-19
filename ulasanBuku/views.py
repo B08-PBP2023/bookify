@@ -96,7 +96,7 @@ def add_ulasan_flutter(request, id_book):
             rating = data.get("rating")
 
             if isi_ulasan and rating is not None:
-                new_item = Review(isi_ulasan=isi_ulasan, rating=rating, book=book)
+                new_item = Review(user = request.user ,content=isi_ulasan, rating= int(rating), book=book)
                 new_item.save()
                 return JsonResponse({"status": "success"}, status=200)
             else:
@@ -106,8 +106,8 @@ def add_ulasan_flutter(request, id_book):
     else:
         return JsonResponse({"status": "error", "message": "Method not allowed"}, status=405)
     
-def get_ulasan_filtered_json(request, id):
-    book = Buku.objects.get(pk=id)
+def get_ulasan_filtered_json(request, id_book):
+    book = Buku.objects.get(pk=id_book)
     judul_book = book.title
     
     isi_ulasan = Review.objects.filter(book = book)
