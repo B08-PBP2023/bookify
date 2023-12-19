@@ -10,6 +10,11 @@ from .forms import ReviewForm  # Anda perlu membuat form terlebih dahulu
 from pinjamBuku.models import Buku
 from django.http import HttpResponseNotFound, HttpResponse
 
+from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 import json
 
 @login_required
@@ -80,16 +85,26 @@ def add_ulasan(request, id_book):
 @csrf_exempt
 def add_ulasan_flutter(request, id_book):
     if request.method == 'POST':
-        book = Buku.objects.get(pk=id_book)
-        data = json.loads(request.body)
-        isi_ulasan = data["isi_ulasan"]
+        try:
+            book = Buku.objects.get(pk=id_book)
+        except ObjectDoesNotExist:
+            return JsonResponse({"status": "error", "message": "Book not found"}, status=404)
 
-        new_item = Review(isi_ulasan=isi_ulasan, book=book)
-        new_item.save()
+        try:
+            data = json.loads(request.body)
+            isi_ulasan = data.get("isi_ulasan")
+            rating = data.get("rating")
 
-        return JsonResponse({"status": "success"}, status=200)
+            if isi_ulasan and rating is not None:
+                new_item = Review(isi_ulasan=isi_ulasan, rating=rating, book=book)
+                new_item.save()
+                return JsonResponse({"status": "success"}, status=200)
+            else:
+                return JsonResponse({"status": "error", "message": "Missing fields"}, status=400)
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
     else:
-        return JsonResponse({"status": "error"}, status=401)
+        return JsonResponse({"status": "error", "message": "Method not allowed"}, status=405)
     
 def get_ulasan_filtered_json(request, id):
     book = Buku.objects.get(pk=id)

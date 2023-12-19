@@ -9,8 +9,8 @@ urlpatterns = [
 ]
 
 urlpatterns = [
-    # path('', show_page, name='show_page'),
     path('get_books/', get_books, name = 'get_books'),
+    # path('', show_page, name='show_page'),
     # path('create_review/<int:book_id>/', create_review, name='create_review'),
     # path('create_review/', create_review, name='create_review'),
     path('review_list/<int:id>/', review_list, name='review_list'),
