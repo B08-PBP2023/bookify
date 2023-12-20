@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse, QueryDict
 from django.shortcuts import render, redirect
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -145,10 +145,12 @@ def is_valid_date(date_string):
         # If parsing fails, it's not a valid date
         return False
 
-@login_required
+
+@login_required(login_url='/auth/login')
 def get_profile_flutter(request):
     try:
         user = request.user
+        
         user_profile = UserProfile.objects.get(name=user.username)
         user_data = {
             "username": user_profile.name,
@@ -156,21 +158,22 @@ def get_profile_flutter(request):
             "tanggalLahir": user_profile.tanggal_lahir,
             "description": user_profile.description,
         }
+        print (user_data)
         return JsonResponse({"status": "success", "data": user_data}, status=200)
     except UserProfile.DoesNotExist:
         return JsonResponse({"status": "error", 'msg': 'User tidak ditemukan'}, status=404)
     except Exception as e:
         return JsonResponse({"status": "error", 'msg': str(e)}, status=500)
 
-
-@login_required 
+@csrf_exempt
+@login_required(login_url='/auth/login')
 def edit_profile_flutter(request):
     try:
         user = request.user
-        print("mm")
         user_profile = UserProfile.objects.get(name=user.username)
+        print ("mantap", user_profile.tanggal_lahir)
         if request.method == 'POST':
-            data = json.loads(request.body)
+            data = QueryDict(request.body.decode('utf-8')).dict()
             new_tanggal_lahir = data['tanggal_lahir']
             new_description = data['description']
             
@@ -186,7 +189,8 @@ def edit_profile_flutter(request):
              "role" : user_profile.role,
              "tanggalLahir" : user_profile.tanggal_lahir,
              "description" : user_profile.description,
-        }
+            }
+            
             return JsonResponse({"status": "success", "msg" : "data user berhasil diubah", "data" : user_data}, status=200)
     except User.DoesNotExist:
             return JsonResponse({"status" : "error", 'msg': 'user tidak ada silahkan login'}, status=401)
@@ -195,7 +199,8 @@ def edit_profile_flutter(request):
     except Exception as e:
             return JsonResponse({"status" : "error", 'msg': str(e)}, status=500)    
     
-@login_required
+@csrf_exempt
+@login_required(login_url='/auth/login')
 def add_favorit_flutter(request, book_id):
     if request.method == 'POST':
         user = request.user
@@ -232,7 +237,8 @@ def get_favorite_by_user_flutter(request):
         })
     return JsonResponse({'status' : 'success','data' : user_favorites} , content_type="application/json")
 
-@login_required
+@csrf_exempt
+@login_required(login_url='/auth/login')
 def delete_favorite_flutter(request, book_id):
     if request.method == 'POST':
         user = request.user

@@ -1,6 +1,6 @@
 from django.urls import path
 from profilUser import views
-from profilUser.views import add_favorit, get_profilUser_json, show_page
+from profilUser.views import add_favorit, get_profilUser_json, show_buku, show_page
 from profilUser.views import show_page
 from profilUser.views import edit_profil_ajax, get_favorites, delete_favorit, get_user_profile_by_name
 from profilUser.views import add_favorit_flutter, get_favorite_by_user_flutter, delete_favorite_flutter,get_profile_flutter,edit_profile_flutter
