@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
-from pinjamBuku.models import Buku, Pinjaman
+from .models import Buku, Pinjaman
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 
