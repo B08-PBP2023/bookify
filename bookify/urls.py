@@ -27,4 +27,5 @@ urlpatterns = [
     path('requestBuku/',include('requestBuku.urls')),
     path('ulasanBuku/',include('ulasanBuku.urls')),
     path('BacaDanWishlist/', include('BacaDanWishlist.urls')),
+    path('auth/', include('flutter_authentication.urls')),
 ]

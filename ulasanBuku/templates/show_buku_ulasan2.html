@@ -1,21 +1,37 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block meta}
-
+    
 {% endblock meta}
 
 {% block content %}
-    <title>Buku Favorit Saya</title>
+    <title>Ulasan Buku</title>
     <nav class="navbar navbar-expanded-lg bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand text-white font-monospace" href="#">List Buku</a>
             <a href="{% url 'Homepage:show_homepage'%}" style="text-decoration: none;" class="mx-2">
+                <button type="button" class="btn btn-primary">Back</button>
             </a>
         </div>
         
     </nav>
 
-    <!-- <div id="book_cards"></div> -->
+    <div class="container my-5">
+        
+        <div class="input-group">
+            <input id="filter_judul" class="form-control" type="search" placeholder="Masukkan judul buku..." aria-label="Search">
+            <div class="input-group-append">
+                <button id="button_filter" class="btn btn-warning" type="submit" onclick=refreshBooks()>Search</button>
+            </div>
+        </div>
+            
+    </div>
 
+    <div id="book_cards"></div>
+
+    <script src="{% static 'js/show_buku_ulasan2.js' %}"></script>
+
+    {% comment %}
     <div class="row row-cols-1 row-cols-md-3 g-4 py-3 justify-content-center">
         {% for book in books %}
         <div class="col mx-5">
@@ -31,14 +47,17 @@
                     <strong>Tanggal Publikasi</strong>: {{book.publication_date}} <br>
                     <strong>Penerbit</strong>: {{book.publisher}} <br>
                 </div>
-                <a href="{% url 'profilUser:show_page' book.pk %}">
+                <a href="{% url 'ulasanBuku:review_list' %}">
                     <button class="form-control btn btn-primary fw-bold">
-                        Tambahkan ke Favorit
+                        Lihat ulasan
                     </button>
                 </a>
             </div>
         </div>
         {% endfor %}
     </div>
+
+    {% endcomment %}
+    
 
 {% endblock content %}
