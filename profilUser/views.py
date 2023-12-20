@@ -191,7 +191,7 @@ def edit_profile_flutter(request):
              "description" : user_profile.description,
             }
             
-            return JsonResponse({"status": "success", "msg" : "data user berhasil diubah", "data" : user_data}, status=200)
+            return JsonResponse({"status": "success", "msg" : "Data user berhasil diubah", "data" : user_data}, status=200)
     except User.DoesNotExist:
             return JsonResponse({"status" : "error", 'msg': 'user tidak ada silahkan login'}, status=401)
     except User.DoesNotExist:
@@ -210,11 +210,11 @@ def add_favorit_flutter(request, book_id):
                 favorite = Favorit(user=user, id_book=buku.pk, title = buku.title, authors = buku.authors, language_code = buku.language_code,
                                    num_pages = buku.num_pages, publication_date = buku.publication_date,publisher = buku.publisher)
                 favorite.save()
-                return JsonResponse({'status' : 'success', 'msg': 'Add to Favorite successfully'}, status=200)
+                return JsonResponse({'status' : 'success', 'msg': 'Berhasil Ditambahkan ke Favorit'}, status=200)
             else:
-                return JsonResponse({'status' : 'failed', 'msg': 'Book is already favorited'}, status=400)
+                return JsonResponse({'status' : 'failed', 'msg': 'Buku Sudah Ditambahkan di List Favorit'}, status=400)
         except Buku.DoesNotExist:
-            return JsonResponse({'status' : 'failed', 'msg': 'Book not found'}, status=400)
+            return JsonResponse({'status' : 'failed', 'msg': 'Buku Tidak Ditemukan'}, status=400)
     return JsonResponse({'status' : 'failed', 'msg': 'Invalid request'}, status=400)
 
 @login_required
@@ -247,9 +247,9 @@ def delete_favorite_flutter(request, book_id):
             favorite = Favorit.objects.filter(user=user, id_book=buku.pk).first()
             if favorite:
                 favorite.delete()
-                return JsonResponse({'status' : 'success','msg': 'Removed from Favorite successfully'}, status=200)
+                return JsonResponse({'status' : 'success','msg': 'Berhasil Menghapus Buku dari Favorit'}, status=200)
             else:
                 return JsonResponse({'status' : 'failed', 'msg': 'Book is not favorited'}, status=400)
         except Buku.DoesNotExist:
-            return JsonResponse({'status' : 'failed', 'msg': 'Book not found'}, status=400)
+            return JsonResponse({'status' : 'failed', 'msg': 'Buku Tidak Ditemukan'}, status=400)
     return JsonResponse({'status' : 'failed', 'msg': 'Invalid request'}, status=400)
