@@ -1,9 +1,9 @@
 from django.shortcuts import redirect, render
 
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
-from pinjamBuku.models import Buku, Pinjaman
+from .models import Buku, Pinjaman
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 
@@ -64,6 +64,60 @@ def borrow_books(request, id_book):
     new_item.save()
     return HttpResponse(b"DELETE", status=201)
     
-    
-    
 
+
+
+@csrf_exempt
+@login_required(login_url='/auth/login')
+def borrow_books_flutter(request, book_id):
+    if request.method == 'POST':
+        user = request.user
+        try:
+            buku = Buku.objects.get(pk=book_id)
+            if not Pinjaman.objects.filter(user=user, id_book=buku.pk).exists():
+                pinjaman = Pinjaman(user=user, id_book=buku.pk, title = buku.title, authors = buku.authors, language_code = buku.language_code,
+                                   num_pages = buku.num_pages, publication_date = buku.publication_date,publisher = buku.publisher)
+                pinjaman.save()
+                return JsonResponse({'status' : 'success', 'msg': 'Add to pinjaman successfully'}, status=200)
+            else:
+                return JsonResponse({'status' : 'failed', 'msg': 'Book is already pinjamand'}, status=400)
+        except Buku.DoesNotExist:
+            return JsonResponse({'status' : 'failed', 'msg': 'Book not found'}, status=400)
+    return JsonResponse({'status' : 'failed', 'msg': 'Invalid request'}, status=400)
+
+@login_required
+def get_books_by_user_flutter(request):
+    user = request.user
+
+    print(user.username)
+    pinjaman = Pinjaman.objects.filter(user = user).all()
+    user_pinjaman = []
+    for buku in pinjaman:
+        user_pinjaman.append({
+            'user_id' : buku.user.pk,
+            'id_book' : buku.id_book,
+            'authors' : buku.authors,
+            'title' : buku.title,
+            'language_code' : buku.language_code,
+            'num_pages' : buku.num_pages,
+            'publication_date' : buku.publication_date,
+            'publisher' : buku.publisher,
+        })
+    return JsonResponse({'status' : 'success','data' : user_pinjaman} , content_type="application/json")
+
+@csrf_exempt
+@login_required(login_url='/auth/login')
+def delete_pinjaman_flutter(request, book_id):
+    if request.method == 'POST':
+        user = request.user
+        try:
+            buku = Buku.objects.get(pk=book_id)
+            pinjaman = Pinjaman.objects.filter(user=user, id_book=buku.pk).first()
+            if pinjaman:
+                pinjaman.delete()
+                return JsonResponse({'status' : 'success','msg': 'Removed from pinjaman successfully'}, status=200)
+            else:
+                return JsonResponse({'status' : 'failed', 'msg': 'Book is not pinjamand'}, status=400)
+        except Buku.DoesNotExist:
+            return JsonResponse({'status' : 'failed', 'msg': 'Book not found'}, status=400)
+    return JsonResponse({'status' : 'failed', 'msg': 'Invalid request'}, status=400)
